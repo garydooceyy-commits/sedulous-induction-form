@@ -186,7 +186,7 @@
 "use strict";
 
 var SCRIPT_URL = "https://script.google.com/macros/s/AKfycby7OCdbosQHr8xhLwp7vkF70nb662zUzKvlXMb-N73jl9RckNNV13HeRZaUC-YZ3GMptw/exec";
-var DRAFT_KEY = "sedulous_induction_draft_v1";
+var DRAFT_KEY = "sedulous_induction_draft_v2";
 
 /* ---------------- content data (transcribed from Form 1, Issue 1) ---------------- */
 
@@ -474,6 +474,7 @@ RENDERERS.yesno = function(card, section){
   if(section.intro) card.appendChild(el("p",{class:"section-intro"},[section.intro]));
   var arr = state[section.id];
   while(arr.length < section.items.length) arr.push(null);
+  if(arr.length > section.items.length) arr.length = section.items.length;
 
   section.items.forEach(function(item, i){
     var isObj = typeof item === "object";
