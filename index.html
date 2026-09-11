@@ -1,0 +1,889 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sedulous Rail — Induction Pack</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Semi+Condensed:wght@500;600;700&family=Public+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#eef1ec; --panel:#ffffff; --panel-2:#f7f8f5;
+    --ink:#1a2420; --ink-muted:#54615a; --line:#c9d0c6; --line-strong:#a7b0a3;
+    --accent:#d45b12; --accent-ink:#ffffff; --accent-soft:#f6ded0;
+    --go:#2e6b3e; --go-soft:#dcece1; --stop:#b3261e; --stop-soft:#f6dcd9;
+    --shadow: 0 1px 2px rgba(20,26,20,.06), 0 6px 16px rgba(20,26,20,.06);
+    --radius: 14px;
+    --font-head: 'Barlow Semi Condensed', 'Arial Narrow', sans-serif;
+    --font-body: 'Public Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
+    --font-mono: 'IBM Plex Mono', ui-monospace, Menlo, monospace;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --paper:#12181a; --panel:#1b2225; --panel-2:#20282b;
+      --ink:#e8ece6; --ink-muted:#a7b1aa; --line:#333d39; --line-strong:#47524c;
+      --accent:#f0812f; --accent-ink:#1a1006; --accent-soft:#3a2515;
+      --go:#5cae6c; --go-soft:#1c3324; --stop:#e5695f; --stop-soft:#3a201d;
+      --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 20px rgba(0,0,0,.35);
+    }
+  }
+  :root[data-theme="dark"]{
+    --paper:#12181a; --panel:#1b2225; --panel-2:#20282b;
+    --ink:#e8ece6; --ink-muted:#a7b1aa; --line:#333d39; --line-strong:#47524c;
+    --accent:#f0812f; --accent-ink:#1a1006; --accent-soft:#3a2515;
+    --go:#5cae6c; --go-soft:#1c3324; --stop:#e5695f; --stop-soft:#3a201d;
+    --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 20px rgba(0,0,0,.35);
+  }
+
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{
+    background:var(--paper); color:var(--ink);
+    font-family:var(--font-body);
+    -webkit-font-smoothing:antialiased;
+    padding-inline:16px;
+    padding-block:0;
+    min-height:100vh;
+  }
+  h1,h2,h3{font-family:var(--font-head); font-weight:700; text-wrap:balance; margin:0}
+  .eyebrow{
+    font-family:var(--font-head); font-weight:600; letter-spacing:.09em; text-transform:uppercase;
+    font-size:12.5px; color:var(--ink-muted);
+  }
+  a{color:var(--accent)}
+
+  /* ---- Top identity bar ---- */
+  .topbar{
+    max-width:640px; margin:0 auto; padding-top:18px;
+    display:flex; align-items:baseline; justify-content:space-between; gap:12px;
+  }
+  .topbar .brand{font-family:var(--font-head); font-weight:700; font-size:19px; letter-spacing:.01em}
+  .topbar .doc-ref{font-family:var(--font-mono); font-size:11.5px; color:var(--ink-muted)}
+
+  /* ---- Sleeper-tick progress rail ---- */
+  .rail-wrap{max-width:640px; margin:14px auto 0; padding:0 2px}
+  .rail{display:flex; gap:4px; align-items:stretch; height:8px}
+  .tie{flex:1; border-radius:2px; background:var(--line); transition:background .25s ease}
+  .tie.done{background:var(--go)}
+  .tie.current{background:var(--accent)}
+  .rail-caption{display:flex; justify-content:space-between; margin-top:7px}
+  .rail-caption span{font-family:var(--font-mono); font-size:11px; color:var(--ink-muted)}
+
+  /* ---- Layout ---- */
+  main{max-width:640px; margin:0 auto; padding-bottom:120px}
+  .card{
+    background:var(--panel); border:1px solid var(--line); border-radius:var(--radius);
+    box-shadow:var(--shadow); padding:22px 20px; margin-top:18px;
+  }
+  .card + .card{margin-top:14px}
+  .section-title{font-size:23px; margin-top:6px}
+  .section-intro{color:var(--ink-muted); font-size:14.5px; line-height:1.55; margin-top:8px}
+  .note{
+    background:var(--panel-2); border:1px solid var(--line); border-radius:10px;
+    padding:12px 14px; font-size:13.5px; color:var(--ink-muted); line-height:1.5; margin-top:14px;
+  }
+
+  /* ---- Fields ---- */
+  label.field-label{display:block; font-family:var(--font-head); font-weight:600; font-size:14.5px; margin-bottom:6px}
+  input[type=text], input[type=date], select, textarea{
+    width:100%; font-family:var(--font-body); font-size:16px; color:var(--ink);
+    background:var(--panel-2); border:1px solid var(--line-strong); border-radius:10px;
+    padding:12px 13px; margin-bottom:16px;
+  }
+  input:focus, select:focus, textarea:focus, button:focus-visible{
+    outline:2px solid var(--accent); outline-offset:1px;
+  }
+  textarea{min-height:70px; resize:vertical}
+
+  /* ---- Yes/No question rows ---- */
+  .qrow{padding:16px 0; border-top:1px solid var(--line)}
+  .qrow:first-of-type{border-top:none; padding-top:6px}
+  .qrow .qtext{font-size:15.5px; line-height:1.5; margin-bottom:10px}
+  .qrow .qtitle{font-family:var(--font-head); font-weight:600; font-size:13.5px; color:var(--ink-muted); text-transform:uppercase; letter-spacing:.05em; margin-bottom:4px}
+  .yn{display:flex; gap:8px}
+  .yn button{
+    flex:1; padding:13px 0; font-family:var(--font-head); font-weight:700; font-size:15px;
+    letter-spacing:.03em; border-radius:10px; border:1.5px solid var(--line-strong);
+    background:var(--panel-2); color:var(--ink); cursor:pointer;
+  }
+  .yn button.yes.sel{background:var(--go-soft); border-color:var(--go); color:var(--go)}
+  .yn button.no.sel{background:var(--stop-soft); border-color:var(--stop); color:var(--stop)}
+  .choice-row{display:flex; gap:8px; margin-top:2px}
+  .choice-row button{
+    flex:1; padding:12px 8px; font-size:15px; border-radius:10px; border:1.5px solid var(--line-strong);
+    background:var(--panel-2); color:var(--ink); cursor:pointer; font-family:var(--font-body); font-weight:600;
+  }
+  .choice-row button.sel{background:var(--accent-soft); border-color:var(--accent); color:var(--accent)}
+  .conditional{margin-top:10px; padding-top:2px}
+
+  .progress-count{font-family:var(--font-mono); font-size:12px; color:var(--ink-muted); margin-top:2px}
+
+  ul.acc-list{margin:12px 0 0; padding-left:20px; font-size:14.5px; line-height:1.6; color:var(--ink)}
+  ul.acc-list li{margin-bottom:6px}
+
+  /* ---- Signature ---- */
+  .sig-wrap{border:1.5px dashed var(--line-strong); border-radius:12px; background:var(--panel-2); overflow:hidden}
+  canvas#sigpad{width:100%; height:180px; touch-action:none; display:block}
+  .sig-actions{display:flex; justify-content:space-between; align-items:center; margin-top:8px}
+  .sig-actions button{
+    font-family:var(--font-head); font-weight:600; font-size:13px; letter-spacing:.03em;
+    background:none; border:none; color:var(--ink-muted); cursor:pointer; padding:6px 0;
+  }
+
+  /* ---- Bottom nav ---- */
+  .navbar{
+    position:fixed; left:0; right:0; bottom:0; background:var(--paper);
+    border-top:1px solid var(--line); padding:12px 16px calc(env(safe-area-inset-bottom) + 12px);
+  }
+  .navbar-inner{max-width:640px; margin:0 auto; display:flex; gap:10px}
+  .btn{
+    flex:1; font-family:var(--font-head); font-weight:700; font-size:16px; letter-spacing:.02em;
+    padding:15px 0; border-radius:11px; border:1.5px solid var(--line-strong); cursor:pointer;
+    background:var(--panel); color:var(--ink);
+  }
+  .btn.primary{background:var(--accent); border-color:var(--accent); color:var(--accent-ink)}
+  .btn.primary:disabled{opacity:.45; cursor:not-allowed}
+  .btn.ghost{flex:0 0 84px}
+
+  .flag{
+    display:inline-flex; align-items:center; gap:6px; font-family:var(--font-head); font-weight:600;
+    font-size:12.5px; letter-spacing:.03em; padding:4px 10px; border-radius:99px; margin-top:10px;
+  }
+  .flag.warn{background:var(--stop-soft); color:var(--stop)}
+
+  /* ---- Start / done screens ---- */
+  .hero-mark{
+    width:44px; height:44px; border-radius:10px; background:var(--accent); color:var(--accent-ink);
+    display:flex; align-items:center; justify-content:center; font-family:var(--font-head); font-weight:700; font-size:20px;
+    margin-bottom:14px;
+  }
+  .done-ref{font-family:var(--font-mono); font-size:14px; background:var(--panel-2); border:1px solid var(--line);
+    border-radius:8px; padding:10px 12px; margin-top:14px; word-break:break-all}
+
+  @media (max-width:420px){
+    .section-title{font-size:20px}
+    canvas#sigpad{height:160px}
+  }
+</style>
+</head>
+<body>
+<div class="topbar">
+  <div class="brand">Sedulous Rail</div>
+  <div class="doc-ref">FORM 1 · ISSUE 1</div>
+</div>
+<div class="rail-wrap">
+  <div class="rail" id="rail"></div>
+  <div class="rail-caption"><span id="railLabel">SECTION 1 OF 10</span><span id="railName"></span></div>
+</div>
+<main id="app"></main>
+<div class="navbar">
+  <div class="navbar-inner" id="navbar"></div>
+</div>
+
+<script>
+(function(){
+"use strict";
+
+var SCRIPT_URL = "https://script.google.com/macros/s/AKfycby7OCdbosQHr8xhLwp7vkF70nb662zUzKvlXMb-N73jl9RckNNV13HeRZaUC-YZ3GMptw/exec";
+var DRAFT_KEY = "sedulous_induction_draft_v1";
+
+/* ---------------- content data (transcribed from Form 1, Issue 1) ---------------- */
+
+var DECLARATION_ITEMS = [
+  "I am aware and understand the policy statements that have been provided to me via the company handbook.",
+  "I have read and understood the Job Description for my position that details my Health & Safety duties as an employee towards the Company, fellow employees, visitors and myself.",
+  "I have read and understood the Drugs & Alcohol Policy and understand the importance of informing the Administrator of any prescribed medication I may be taking before I make myself available for work.",
+  "I have read and understand what to do if there is an accident or incident; where to find the names and locations of trained First Aiders, plus the requirement to report all accidents to my Manager/Supervisor.",
+  "I have read and now understood my responsibility to report all near misses, defective plant & equipment, unsafe practices or methods of work which have the potential to cause injury.",
+  "I understand the importance of informing my manager of hospitality or gifts accepted or offered, my rights to my personal information, and that modern slavery is a crime and should be reported to the business.",
+  "I have read and understand the significance of complying with the Managing Fatigue Policy.",
+  "I have read and understand that should I want to use a substance that has not been issued on site, I must inform my Manager/Supervisor to enable a COSHH assessment to be carried out prior to its use.",
+  "I have read the rules applicable to the use of all plant & equipment including scaffolding, ladders etc. and understand the company procedures are available to me upon request.",
+  "I have read and understand the Work Safe Procedure, the Confidential Reporting Process & the CIRAS Process (CIRAS for PTS-certificated employees only).",
+  "I have read and understand that the correct Manual Handling techniques should be used when lifting.",
+  "I have read and understand that the correct PPE must always be worn whilst working and that I must report where replacements are required.",
+  "I have been informed that I must receive a site-specific briefing when I first arrive at each site, and that I should receive a site induction at every site I work on.",
+  "I have read and understand the need for good housekeeping and my own housekeeping responsibilities.",
+  "I am aware of the access and exit routes applicable to the site, and those locations where access is prohibited or restricted; the reasons have been explained to me.",
+  "I am aware of the emergency arrangements, evacuation routes & emergency exits from my place of work, the location of fire points and assembly points, and have been introduced to the Fire Warden responsible for my place of work.",
+  "I am aware of the location of all welfare facilities (canteen, toilets, washrooms etc.) available to me on each site, and where these are not fit for purpose, I will report it to the supervisor.",
+  "I have read and understood the Network Rail Life Saving Rules and am in receipt of the Rail Handbook.",
+  "I am in possession of the latest handbooks/rule books and PTS handbook and am aware of my duties and competencies required within these documents."
+];
+
+var MEDICAL_ITEMS = [
+  "Do you have diabetes needing insulin?",
+  "Do you take medication that may affect your work or your ability to work?",
+  "Do you suffer from epilepsy or fits?",
+  "Have you ever had blackouts, recurrent dizziness, or any condition which may cause sudden collapse or incapacity?",
+  "Do you get discomfort or pain in the chest, or shortness of breath on exercise, e.g. climbing a single flight of stairs?",
+  "Do you have difficulty moving rapidly over short distances, including on slopes, steps or rough ground?",
+  "Do you have difficulty looking over either shoulder?",
+  "Do you have difficulty with your eyesight (simple problems needing glasses need not be included)?",
+  "Do you wear contact lenses?",
+  "Do you have difficulty hearing normal conversations?",
+  "Are you taking any medication that is giving you dizziness or drowsiness?",
+  "Have you used drugs of abuse within the last 12 months?",
+  "Have you had any alcohol-related illness during the last 12 months?",
+  "Have you ever suffered with sleep apnoea?"
+];
+
+var HAV_MAIN = [
+  { key:"prevJobs", text:"Did previous jobs involve the use of vibrating equipment?" },
+  { key:"fingersWhite", text:"Have you ever suffered from your fingers going white on exposure to cold?" },
+  { key:"tingling", text:"Have you had any tingling or numbness in your fingers after using vibrating equipment?" },
+  { key:"jointProblems", text:"Are you experiencing any problems with muscles or joints in your hands or arms?" },
+  { key:"pickup", text:"Do you have any difficulty picking up small objects such as screws or nails?" },
+  { key:"hobbies", text:"Do any of your hobbies expose you to hand-arm vibration?", detailIfYes:"If yes, please give details" }
+];
+
+var PPE_ITEMS = [
+  { key:"boots", text:"Safety boots (steel midsole, steel toe cap)" },
+  { key:"vest", text:"Orange high-visibility vest — in accordance with RIS-3279-TOM" },
+  { key:"jacket", text:"Orange high-visibility jacket — in accordance with RIS-3279-TOM" },
+  { key:"trousers", text:"Orange high-visibility trousers — in accordance with RIS-3279-TOM" },
+  { key:"hardhat", text:"Hardhat and chinstrap" },
+  { key:"goggles", text:"Goggles" },
+  { key:"ears", text:"Ear defenders", detailIfYes:"SNR rating (if provided)" },
+  { key:"gloves", text:"Gloves, cut 5", detailIfNo:"Reason if not cut 5 (activity type)" },
+  { key:"uniform", text:"Uniform" }
+];
+
+var FINAL_DECLARATION_ITEMS = [
+  { title:"Induction training checklist", text:"I fully understand the contents of the Induction Briefing Pack and that it is a requirement of my employment terms to fully comply with those instructions." },
+  { title:"Job description", text:"I fully understand my roles and responsibilities detailed within the job description and agree to work to the requirements of the rule book." },
+  { title:"Medical declaration", text:"I have completed the Medical Self-Certificate and the answers are, to the best of my knowledge, true." },
+  { title:"HAV medical questionnaire", text:"I have completed the HAV questionnaire and the answers are, to the best of my knowledge, true." },
+  { title:"Health & Safety Policy", text:"I have read and understand the Company's Health & Safety Policy." },
+  { title:"Environmental Policy", text:"I have read and understand the Company's Environmental Policy." },
+  { title:"Quality Policy", text:"I have read and understand the Company's Quality Policy." },
+  { title:"Work Safe Policy", text:"I have read and understand the Company's Work Safe Policy." },
+  { title:"Alcohol & Drugs Policy", text:"I have read and understand the Company's Alcohol & Drugs Policy." },
+  { title:"Anti-Bribery, Modern Slavery & Privacy", text:"I have read and understand the Company's policy on bribery, modern slavery and privacy." },
+  { title:"Hours of Work Policy", text:"I have read and understand the Company's Policy on Hours of Work." },
+  { title:"PPE Register", text:"I have signed for my initial issue of PPE and understand the process for replacement equipment." },
+  { title:"Network Rail Life Saving Rules", text:"I have signed for my understanding of, and compliance with, the Network Rail Life Saving Rules." },
+  { title:"Rail Handbook", text:"I am in receipt of my Rail Handbook." }
+];
+
+var KEY_ACCOUNTABILITIES = [
+  "Undertaking allocated tasks in a timely manner and to the quality level that trade training determines.",
+  "Compliance with the safe system of work set up by the Supervisor or Manager, and awareness of the control measures and requirements.",
+  "Personal safety, ensuring all duties are carried out with minimum risk to themselves and others.",
+  "Not interfering with any equipment provided for safety, and compliance with site safety rules and instructions in the operative's site manual.",
+  "Drawing Management's attention to any shortfall in competence or knowledge, to enable duties to be carried out safely.",
+  "Ensuring all accidents/incidents are reported in accordance with company and local site procedures.",
+  "Ensuring all instructions cascaded from the client or the Company are implemented on site.",
+  "Taking an active role in ensuring all safety & environmental matters are properly assessed before undertaking any duty.",
+  "Attending safety meetings/briefings as requested.",
+  "Ensuring sufficient knowledge/experience to carry out duties safely and with minimum risk.",
+  "Driving, when required and authorised, company vehicles and plant in compliance with training and legislation.",
+  "Ensuring compliance with the relevant rule books/handbooks associated with their level of competence.",
+  "Following the manuals and documents associated with the delivery of their duties."
+];
+
+var TIME_QUESTIONS = [
+  { text:"09:30pm", answer:"2130" },
+  { text:"05:00pm", answer:"1700" },
+  { text:"11:00pm", answer:"2300" },
+  { text:"11:30pm", answer:"2330" },
+  { text:"03:00am", answer:"0300" },
+  { text:"01:00pm", answer:"1300" }
+];
+var CHOICE_QUESTIONS = [
+  { text:"Their / There are leaves on the driveway", options:["Their","There"], answer:"There" },
+  { text:"The bus went through / threw the tunnel", options:["Through","Threw"], answer:"Through" },
+  { text:"There are two / too line speeds at the station", options:["Two","Too"], answer:"Two" },
+  { text:"The trackmen workers are / our working in the red zone", options:["Are","Our"], answer:"Are" }
+];
+var SPELLING_QUESTIONS = [
+  { text:"The station is verry busy", answer:"very" },
+  { text:"What thyme is the train due to depart?", answer:"time" }
+];
+var PHONETIC_LETTERS = ["S","I","G","N","A","L"];
+var PHONETIC_ANSWERS = {S:"sierra",I:"india",G:"golf",N:"november",A:"alpha",L:"lima"};
+
+/* ---------------- section list ---------------- */
+
+var SECTIONS = [
+  { id:"start", name:"Your details", type:"start" },
+  { id:"declaration", name:"Induction declaration", type:"yesno", items:DECLARATION_ITEMS,
+    intro:"Please confirm each statement below. A copy of this checklist will be held on your training file." },
+  { id:"literacy", name:"Literacy & numeracy", type:"literacy" },
+  { id:"optout", name:"Working time opt-out", type:"optout" },
+  { id:"jobdesc", name:"Job description", type:"jobdesc" },
+  { id:"medical", name:"Medical self-certificate", type:"medical" },
+  { id:"hav", name:"HAV questionnaire", type:"hav" },
+  { id:"ppe", name:"PPE register", type:"ppe" },
+  { id:"finaldeclaration", name:"Employee's declaration", type:"yesno", items:FINAL_DECLARATION_ITEMS,
+    intro:"Please confirm each of the following before signing." },
+  { id:"signature", name:"Sign & submit", type:"signature" },
+  { id:"done", name:"Submitted", type:"done" }
+];
+
+/* ---------------- state ---------------- */
+
+var state = {
+  step: 0,
+  name:"", role:"", date: todayISO(),
+  declaration: [],
+  literacy: { times:[], choices:[], spellings:[], phonetic:[] },
+  optout: null,
+  jobdesc: { location:"", competencies:{PTS:false,LKT:false,COSS:false,Other:false,CSCS:false,CPCS:false}, otherText:"", experience:"" },
+  medical: [],
+  hav: { jobRole:"", main:{}, hobbyDetail:"", onsetWhen:"", frequency:"", season:"" },
+  ppe: { answers:{}, earsDetail:"", glovesDetail:"", maskRating:"", ownEquipment:null, comfortable:null },
+  finaldeclaration: [],
+  signatureName:"", signatureData:null,
+  submitted:false, submissionId:null
+};
+loadDraft();
+
+function todayISO(){ var d=new Date(); return d.toISOString().slice(0,10); }
+
+function loadDraft(){
+  try{
+    var raw = localStorage.getItem(DRAFT_KEY);
+    if(raw){
+      var saved = JSON.parse(raw);
+      if(saved && !saved.submitted){ Object.assign(state, saved); }
+    }
+  }catch(e){}
+}
+function saveDraft(){
+  try{ localStorage.setItem(DRAFT_KEY, JSON.stringify(state)); }catch(e){}
+}
+function clearDraft(){
+  try{ localStorage.removeItem(DRAFT_KEY); }catch(e){}
+}
+
+/* ---------------- render ---------------- */
+
+var app = document.getElementById("app");
+var navbar = document.getElementById("navbar");
+
+function el(tag, attrs, children){
+  var e = document.createElement(tag);
+  attrs = attrs || {};
+  for(var k in attrs){
+    if(k==="class") e.className = attrs[k];
+    else if(k==="html") e.innerHTML = attrs[k];
+    else if(k.indexOf("on")===0) e.addEventListener(k.slice(2), attrs[k]);
+    else e.setAttribute(k, attrs[k]);
+  }
+  (children||[]).forEach(function(c){ if(c) e.appendChild(typeof c==="string"?document.createTextNode(c):c); });
+  return e;
+}
+
+function render(){
+  renderRail();
+  var section = SECTIONS[state.step];
+  app.innerHTML = "";
+  var card = el("div",{class:"card"});
+  app.appendChild(card);
+
+  RENDERERS[section.type](card, section);
+  renderNav(section);
+  saveDraft();
+}
+
+function renderRail(){
+  var rail = document.getElementById("rail");
+  rail.innerHTML = "";
+  SECTIONS.forEach(function(s, i){
+    if(s.type==="done") return;
+    var cls = "tie" + (i < state.step ? " done" : i===state.step ? " current" : "");
+    rail.appendChild(el("div",{class:cls}));
+  });
+  var total = SECTIONS.length - 1;
+  document.getElementById("railLabel").textContent = state.step < total
+    ? "SECTION " + (state.step+1) + " OF " + total
+    : "COMPLETE";
+  document.getElementById("railName").textContent = (SECTIONS[state.step].name||"").toUpperCase();
+}
+
+function renderNav(section){
+  navbar.innerHTML = "";
+  if(section.type==="done"){ return; }
+  var isFirst = state.step===0;
+  var isLastBeforeDone = SECTIONS[state.step+1] && SECTIONS[state.step+1].type==="done";
+
+  if(!isFirst){
+    navbar.appendChild(el("button",{class:"btn ghost", onclick:function(){ state.step--; render(); window.scrollTo(0,0); }},["Back"]));
+  }
+  var nextLabel = isLastBeforeDone ? "Review & sign" : "Next";
+  var canGo = validateSection(section);
+  var nextBtn = el("button",{class:"btn primary" + (canGo?"":""), onclick:function(){
+    if(!validateSection(section)) return;
+    if(section.type==="signature"){ submit(); return; }
+    state.step++; render(); window.scrollTo(0,0);
+  }},[nextLabel]);
+  if(!canGo) nextBtn.disabled = true;
+  navbar.appendChild(nextBtn);
+}
+
+/* ---------------- validation ---------------- */
+
+function validateSection(section){
+  switch(section.type){
+    case "start": return state.name.trim().length>1 && state.role.trim().length>1;
+    case "yesno": return (state[section.id]||[]).length===section.items.length && state[section.id].every(function(v){return v==="yes"||v==="no";});
+    case "literacy": return true;
+    case "optout": return state.optout==="yes" || state.optout==="no";
+    case "jobdesc": return state.jobdesc.location.trim().length>0 && state.jobdesc.experience!=="";
+    case "medical": return state.medical.length===MEDICAL_ITEMS.length && state.medical.every(function(v){return v==="yes"||v==="no";});
+    case "hav": return HAV_MAIN.every(function(q){ return state.hav.main[q.key]==="yes" || state.hav.main[q.key]==="no"; });
+    case "ppe": return PPE_ITEMS.every(function(p){ return state.ppe.answers[p.key]==="yes"||state.ppe.answers[p.key]==="no"; })
+      && (state.ppe.ownEquipment==="yes"||state.ppe.ownEquipment==="no")
+      && (state.ppe.comfortable==="yes"||state.ppe.comfortable==="no");
+    case "signature": return state.signatureName.trim().length>1 && !!state.signatureData;
+    default: return true;
+  }
+}
+
+/* ---------------- section renderers ---------------- */
+
+var RENDERERS = {};
+
+RENDERERS.start = function(card){
+  card.appendChild(el("div",{class:"hero-mark"},["SR"]));
+  card.appendChild(el("h1",{class:"section-title"},["Welcome to Sedulous Rail"]));
+  card.appendChild(el("p",{class:"section-intro"},[
+    "This is your induction pack. It covers your safety declaration, a short literacy check, your job description, a medical self-certificate, an HAV questionnaire and your PPE register — all in one go, on your phone. It takes about 15 minutes. You can leave and come back; your answers are kept on this device until you submit."
+  ]));
+
+  card.appendChild(el("label",{class:"field-label", for:"f-name"},["Full name"]));
+  card.appendChild(el("input",{type:"text", id:"f-name", value:state.name, placeholder:"e.g. Jordan Miles",
+    oninput:function(e){ state.name = e.target.value; renderNavOnly(); }}));
+
+  card.appendChild(el("label",{class:"field-label", for:"f-role"},["Role"]));
+  card.appendChild(el("input",{type:"text", id:"f-role", value:state.role, placeholder:"e.g. Operative",
+    oninput:function(e){ state.role = e.target.value; renderNavOnly(); }}));
+
+  card.appendChild(el("label",{class:"field-label", for:"f-date"},["Today's date"]));
+  card.appendChild(el("input",{type:"date", id:"f-date", value:state.date,
+    oninput:function(e){ state.date = e.target.value; }}));
+};
+
+function renderNavOnly(){
+  var section = SECTIONS[state.step];
+  renderNav(section);
+  saveDraft();
+}
+
+RENDERERS.yesno = function(card, section){
+  card.appendChild(el("h2",{class:"section-title"},[section.name]));
+  if(section.intro) card.appendChild(el("p",{class:"section-intro"},[section.intro]));
+  var arr = state[section.id];
+  while(arr.length < section.items.length) arr.push(null);
+
+  section.items.forEach(function(item, i){
+    var isObj = typeof item === "object";
+    var row = el("div",{class:"qrow"});
+    if(isObj) row.appendChild(el("div",{class:"qtitle"},[item.title]));
+    row.appendChild(el("div",{class:"qtext"},[isObj?item.text:item]));
+    var yn = el("div",{class:"yn"});
+    var yesBtn = el("button",{class:"yes" + (arr[i]==="yes"?" sel":""), onclick:function(){ arr[i]="yes"; render(); }},["Yes"]);
+    var noBtn = el("button",{class:"no" + (arr[i]==="no"?" sel":""), onclick:function(){ arr[i]="no"; render(); }},["No"]);
+    yn.appendChild(yesBtn); yn.appendChild(noBtn);
+    row.appendChild(yn);
+    card.appendChild(row);
+  });
+
+  var answered = arr.filter(function(v){return v;}).length;
+  card.appendChild(el("div",{class:"progress-count"},[answered + " of " + section.items.length + " answered"]));
+};
+
+RENDERERS.literacy = function(card){
+  card.appendChild(el("h2",{class:"section-title"},["Literacy & numeracy check"]));
+  card.appendChild(el("p",{class:"section-intro"},["A quick check, same as the paper version. Answer as best you can — there's no need to look anything up."]));
+
+  card.appendChild(el("label",{class:"field-label"},["Put the times into 24-hour clock (e.g. 5:30am = 05.30)"]));
+  TIME_QUESTIONS.forEach(function(q,i){
+    card.appendChild(el("label",{class:"field-label", style:"font-weight:500;font-family:var(--font-body);font-size:14px;color:var(--ink-muted)"},[q.text]));
+    card.appendChild(el("input",{type:"text", inputmode:"numeric", placeholder:"e.g. 05.30", value:state.literacy.times[i]||"",
+      oninput:function(e){ state.literacy.times[i]=e.target.value; }}));
+  });
+
+  card.appendChild(el("label",{class:"field-label"},["Choose the correct word"]));
+  CHOICE_QUESTIONS.forEach(function(q,i){
+    var wrap = el("div",{style:"margin-bottom:14px"});
+    wrap.appendChild(el("div",{class:"qtext"},[q.text]));
+    var row = el("div",{class:"choice-row"});
+    q.options.forEach(function(opt){
+      row.appendChild(el("button",{class: (state.literacy.choices[i]===opt?"sel":""), onclick:function(){ state.literacy.choices[i]=opt; render(); }},[opt]));
+    });
+    wrap.appendChild(row);
+    card.appendChild(wrap);
+  });
+
+  card.appendChild(el("label",{class:"field-label"},["Write the correct spelling"]));
+  SPELLING_QUESTIONS.forEach(function(q,i){
+    card.appendChild(el("label",{class:"field-label", style:"font-weight:500;font-family:var(--font-body);font-size:14px;color:var(--ink-muted)"},[q.text]));
+    card.appendChild(el("input",{type:"text", placeholder:"correction", value:state.literacy.spellings[i]||"",
+      oninput:function(e){ state.literacy.spellings[i]=e.target.value; }}));
+  });
+
+  card.appendChild(el("label",{class:"field-label"},["Write the word SIGNAL in the phonetic alphabet (e.g. T = Tango)"]));
+  var row = el("div",{style:"display:grid; grid-template-columns:repeat(3,1fr); gap:10px"});
+  PHONETIC_LETTERS.forEach(function(letter,i){
+    var box = el("div",{});
+    box.appendChild(el("label",{class:"field-label", style:"font-family:var(--font-mono); font-size:13px"},[letter + " ="]));
+    box.appendChild(el("input",{type:"text", placeholder:"e.g. Tango", value:state.literacy.phonetic[i]||"", style:"margin-bottom:0",
+      oninput:function(e){ state.literacy.phonetic[i]=e.target.value; }}));
+    row.appendChild(box);
+  });
+  card.appendChild(row);
+};
+
+RENDERERS.optout = function(card){
+  card.appendChild(el("h2",{class:"section-title"},["Working Time Regulations — opt-out"]));
+  card.appendChild(el("p",{class:"section-intro"},[
+    "“I agree that I may work for more than an average of 48 hours a week. If I change my mind, I will give up to 3 months’ notice in writing to end this agreement.”"
+  ]));
+  var row = el("div",{class:"qrow"});
+  row.appendChild(el("div",{class:"qtext"},["Do you agree to opt out of the 48-hour average working week limit?"]));
+  var yn = el("div",{class:"yn"});
+  yn.appendChild(el("button",{class:"yes"+(state.optout==="yes"?" sel":""), onclick:function(){ state.optout="yes"; render(); }},["Yes, I agree"]));
+  yn.appendChild(el("button",{class:"no"+(state.optout==="no"?" sel":""), onclick:function(){ state.optout="no"; render(); }},["No"]));
+  row.appendChild(yn);
+  card.appendChild(row);
+  card.appendChild(el("div",{class:"note"},["This is a genuine legal opt-out under the Working Time Regulations 1998. If you're unsure, choose No and speak to your manager — you can revisit this later."]));
+};
+
+RENDERERS.jobdesc = function(card){
+  card.appendChild(el("h2",{class:"section-title"},["Job description — Operative"]));
+  card.appendChild(el("p",{class:"section-intro"},["The Operative will be responsible for the duties detailed below:"]));
+  var ul = el("ul",{class:"acc-list"});
+  KEY_ACCOUNTABILITIES.forEach(function(t){ ul.appendChild(el("li",{},[t])); });
+  card.appendChild(ul);
+
+  card.appendChild(el("label",{class:"field-label"},["Sites allocated / location"]));
+  card.appendChild(el("input",{type:"text", value:state.jobdesc.location, placeholder:"e.g. based from Derby depot, various sites",
+    oninput:function(e){ state.jobdesc.location = e.target.value; renderNavOnly(); }}));
+
+  card.appendChild(el("label",{class:"field-label"},["Competency requirements (select all that apply)"]));
+  var grid = el("div",{style:"display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:6px"});
+  ["PTS","LKT","COSS","CSCS","CPCS","Other"].forEach(function(k){
+    grid.appendChild(el("button",{onclick:function(){ state.jobdesc.competencies[k]=!state.jobdesc.competencies[k]; render(); },
+      style:"padding:12px 8px;border-radius:10px;border:1.5px solid var(--line-strong);font-family:var(--font-body);font-weight:600;cursor:pointer;background:" +
+        (state.jobdesc.competencies[k]?"var(--accent-soft)":"var(--panel-2)") + ";border-color:" + (state.jobdesc.competencies[k]?"var(--accent)":"var(--line-strong)") +
+        ";color:" + (state.jobdesc.competencies[k]?"var(--accent)":"var(--ink)")
+    },[k]));
+  });
+  card.appendChild(grid);
+  if(state.jobdesc.competencies.Other){
+    card.appendChild(el("input",{type:"text", placeholder:"Please list other competencies", value:state.jobdesc.otherText,
+      oninput:function(e){ state.jobdesc.otherText = e.target.value; }}));
+  }
+
+  card.appendChild(el("label",{class:"field-label"},["Years' experience"]));
+  var sel = el("select",{onchange:function(e){ state.jobdesc.experience = e.target.value; renderNavOnly(); }});
+  [["","Choose an item"],["<1","Less than 1 year"],["1-2","1–2 years"],["3-5","3–5 years"],["6-10","6–10 years"],["10+","10+ years"]].forEach(function(o){
+    var opt = el("option",{value:o[0]},[o[1]]);
+    if(state.jobdesc.experience===o[0]) opt.selected = true;
+    sel.appendChild(opt);
+  });
+  card.appendChild(sel);
+};
+
+RENDERERS.medical = function(card){
+  card.appendChild(el("h2",{class:"section-title"},["Medical self-certificate"]));
+  card.appendChild(el("p",{class:"section-intro"},["Please answer honestly. All information is treated in strict confidence and you will not be discriminated against or penalised in any way."]));
+  while(state.medical.length < MEDICAL_ITEMS.length) state.medical.push(null);
+  MEDICAL_ITEMS.forEach(function(text, i){
+    var row = el("div",{class:"qrow"});
+    row.appendChild(el("div",{class:"qtext"},[(i+1) + ". " + text]));
+    var yn = el("div",{class:"yn"});
+    yn.appendChild(el("button",{class:"yes"+(state.medical[i]==="yes"?" sel":""), onclick:function(){ state.medical[i]="yes"; render(); }},["Yes"]));
+    yn.appendChild(el("button",{class:"no"+(state.medical[i]==="no"?" sel":""), onclick:function(){ state.medical[i]="no"; render(); }},["No"]));
+    row.appendChild(yn);
+    card.appendChild(row);
+  });
+  card.appendChild(el("div",{class:"note"},["If you develop a new medical condition after completing this questionnaire, report it to a member of the management team immediately. Remember to tell your Manager or Supervisor about any prescription or over-the-counter medication that may affect your ability to undertake your normal duties."]));
+  var answered = state.medical.filter(function(v){return v;}).length;
+  card.appendChild(el("div",{class:"progress-count"},[answered + " of " + MEDICAL_ITEMS.length + " answered"]));
+};
+
+RENDERERS.hav = function(card){
+  card.appendChild(el("h2",{class:"section-title"},["HAV medical questionnaire"]));
+  card.appendChild(el("p",{class:"section-intro"},["For anyone whose role involves vibratory tools. Completed at pre-employment and then every 12 months."]));
+
+  card.appendChild(el("label",{class:"field-label"},["Job role"]));
+  card.appendChild(el("input",{type:"text", value:state.hav.jobRole, oninput:function(e){ state.hav.jobRole=e.target.value; }}));
+
+  HAV_MAIN.forEach(function(q){
+    var row = el("div",{class:"qrow"});
+    row.appendChild(el("div",{class:"qtext"},[q.text]));
+    var yn = el("div",{class:"yn"});
+    yn.appendChild(el("button",{class:"yes"+(state.hav.main[q.key]==="yes"?" sel":""), onclick:function(){ state.hav.main[q.key]="yes"; render(); }},["Yes"]));
+    yn.appendChild(el("button",{class:"no"+(state.hav.main[q.key]==="no"?" sel":""), onclick:function(){ state.hav.main[q.key]="no"; render(); }},["No"]));
+    row.appendChild(yn);
+    card.appendChild(row);
+    if(q.detailIfYes && state.hav.main[q.key]==="yes"){
+      var wrap = el("div",{class:"conditional"});
+      wrap.appendChild(el("input",{type:"text", placeholder:q.detailIfYes, value:state.hav.hobbyDetail,
+        oninput:function(e){ state.hav.hobbyDetail=e.target.value; }}));
+      card.appendChild(wrap);
+    }
+  });
+
+  var anyMiddleYes = ["fingersWhite","tingling","jointProblems","pickup"].some(function(k){ return state.hav.main[k]==="yes"; });
+  if(anyMiddleYes){
+    card.appendChild(el("div",{class:"note"},["You answered yes to one of questions 2–5 — a couple of follow-up questions:"]));
+    card.appendChild(el("label",{class:"field-label"},["When did you first notice this?"]));
+    card.appendChild(el("input",{type:"text", value:state.hav.onsetWhen, placeholder:"e.g. 2 years ago",
+      oninput:function(e){ state.hav.onsetWhen=e.target.value; }}));
+
+    card.appendChild(el("label",{class:"field-label"},["If you suffer now, how often does it occur?"]));
+    var freqRow = el("div",{style:"display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:16px"});
+    ["Several times a year","Several times a month","Several times a day","Every day"].forEach(function(f){
+      var sel = state.hav.frequency===f;
+      freqRow.appendChild(el("button",{
+        style:"padding:12px 8px;border-radius:10px;border:1.5px solid var(--line-strong);font-family:var(--font-body);font-weight:600;cursor:pointer;background:"+(sel?"var(--accent-soft)":"var(--panel-2)")+";border-color:"+(sel?"var(--accent)":"var(--line-strong)")+";color:"+(sel?"var(--accent)":"var(--ink)"),
+        onclick:function(){ state.hav.frequency=f; render(); }
+      },[f]));
+    });
+    card.appendChild(freqRow);
+
+    card.appendChild(el("label",{class:"field-label"},["Does it occur in winter only, or winter and summer?"]));
+    var seaRow = el("div",{style:"display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:6px"});
+    ["Winter only","Winter and summer"].forEach(function(s){
+      seaRow.appendChild(el("button",{class:(state.hav.season===s?"sel":""), style:"padding:12px 8px;border-radius:10px;border:1.5px solid var(--line-strong);font-family:var(--font-body);font-weight:600;cursor:pointer;background:"+(state.hav.season===s?"var(--accent-soft)":"var(--panel-2)")+";border-color:"+(state.hav.season===s?"var(--accent)":"var(--line-strong)")+";color:"+(state.hav.season===s?"var(--accent)":"var(--ink)"),
+        onclick:function(){ state.hav.season=s; render(); }},[s]));
+    });
+    card.appendChild(seaRow);
+  }
+};
+
+RENDERERS.ppe = function(card){
+  card.appendChild(el("h2",{class:"section-title"},["PPE register"]));
+  card.appendChild(el("p",{class:"section-intro"},["Initial PPE issue is free of charge. A pro-rata charge may apply for replacement only if it's proven the equipment was used for purposes other than work."]));
+
+  PPE_ITEMS.forEach(function(item){
+    var row = el("div",{class:"qrow"});
+    row.appendChild(el("div",{class:"qtext"},[item.text]));
+    var yn = el("div",{class:"yn"});
+    var a = state.ppe.answers[item.key];
+    yn.appendChild(el("button",{class:"yes"+(a==="yes"?" sel":""), onclick:function(){ state.ppe.answers[item.key]="yes"; render(); }},["Issued"]));
+    yn.appendChild(el("button",{class:"no"+(a==="no"?" sel":""), onclick:function(){ state.ppe.answers[item.key]="no"; render(); }},["Not issued"]));
+    row.appendChild(yn);
+    card.appendChild(row);
+    if(item.detailIfYes && a==="yes"){
+      card.appendChild(el("div",{class:"conditional"},[el("input",{type:"text", placeholder:item.detailIfYes, value:state.ppe.earsDetail,
+        oninput:function(e){ state.ppe.earsDetail=e.target.value; }})]));
+    }
+    if(item.detailIfNo && a==="no"){
+      card.appendChild(el("div",{class:"conditional"},[el("input",{type:"text", placeholder:item.detailIfNo, value:state.ppe.glovesDetail,
+        oninput:function(e){ state.ppe.glovesDetail=e.target.value; }})]));
+    }
+  });
+
+  card.appendChild(el("label",{class:"field-label"},["Mask rating (if issued, e.g. FP3) — optional"]));
+  card.appendChild(el("input",{type:"text", value:state.ppe.maskRating, oninput:function(e){ state.ppe.maskRating=e.target.value; }}));
+
+  var row2 = el("div",{class:"qrow"});
+  row2.appendChild(el("div",{class:"qtext"},["Are you providing your own equipment?"]));
+  var yn2 = el("div",{class:"yn"});
+  yn2.appendChild(el("button",{class:"yes"+(state.ppe.ownEquipment==="yes"?" sel":""), onclick:function(){ state.ppe.ownEquipment="yes"; render(); }},["Yes"]));
+  yn2.appendChild(el("button",{class:"no"+(state.ppe.ownEquipment==="no"?" sel":""), onclick:function(){ state.ppe.ownEquipment="no"; render(); }},["No"]));
+  row2.appendChild(yn2);
+  card.appendChild(row2);
+  if(state.ppe.ownEquipment==="yes"){
+    card.appendChild(el("div",{class:"flag warn"},["Photographic evidence needed — please show this to your supervisor separately"]));
+  }
+
+  var row3 = el("div",{class:"qrow"});
+  row3.appendChild(el("div",{class:"qtext"},["Can you confirm the PPE is comfortable and that you know how to use and maintain it?"]));
+  var yn3 = el("div",{class:"yn"});
+  yn3.appendChild(el("button",{class:"yes"+(state.ppe.comfortable==="yes"?" sel":""), onclick:function(){ state.ppe.comfortable="yes"; render(); }},["Yes"]));
+  yn3.appendChild(el("button",{class:"no"+(state.ppe.comfortable==="no"?" sel":""), onclick:function(){ state.ppe.comfortable="no"; render(); }},["No"]));
+  row3.appendChild(yn3);
+  card.appendChild(row3);
+
+  card.appendChild(el("div",{class:"note"},["Keep PPE properly maintained and replace it when damaged — contact your Manager or Supervisor for replacements. When not in use, store it safely; Operatives should store it in their vehicle so it can't move about while driving."]));
+};
+
+var sigCtx=null, sigDrawing=false, sigHasStroke=false;
+
+RENDERERS.signature = function(card){
+  card.appendChild(el("h2",{class:"section-title"},["Sign & submit"]));
+  card.appendChild(el("p",{class:"section-intro"},[
+    "By signing below I confirm that the information provided in this induction pack is true and accurate to the best of my knowledge."
+  ]));
+
+  card.appendChild(el("label",{class:"field-label"},["Type your full name (this is your legal signature)"]));
+  card.appendChild(el("input",{type:"text", value:state.signatureName, placeholder:"Full name",
+    oninput:function(e){ state.signatureName = e.target.value; renderNavOnly(); }}));
+
+  card.appendChild(el("label",{class:"field-label"},["Sign with your finger below"]));
+  var wrap = el("div",{class:"sig-wrap"});
+  var canvas = el("canvas",{id:"sigpad"});
+  wrap.appendChild(canvas);
+  card.appendChild(wrap);
+  var actions = el("div",{class:"sig-actions"});
+  actions.appendChild(el("span",{style:"font-family:var(--font-mono);font-size:11px;color:var(--ink-muted)"},["Date: " + state.date]));
+  actions.appendChild(el("button",{onclick:function(){ clearSig(); }},["Clear"]));
+  card.appendChild(actions);
+
+  setTimeout(function(){ setupSignaturePad(canvas); }, 0);
+};
+
+function setupSignaturePad(canvas){
+  var dpr = window.devicePixelRatio || 1;
+  var rect = canvas.getBoundingClientRect();
+  canvas.width = rect.width * dpr;
+  canvas.height = rect.height * dpr;
+  sigCtx = canvas.getContext("2d");
+  sigCtx.scale(dpr, dpr);
+  sigCtx.lineWidth = 2.2;
+  sigCtx.lineCap = "round";
+  sigCtx.strokeStyle = getComputedStyle(document.documentElement).getPropertyValue("--ink").trim() || "#1a2420";
+  sigHasStroke = false;
+
+  if(state.signatureData){
+    var img = new Image();
+    img.onload = function(){ sigCtx.drawImage(img,0,0,rect.width,rect.height); };
+    img.src = state.signatureData;
+    sigHasStroke = true;
+  }
+
+  var last = null;
+  function pos(e){
+    var r = canvas.getBoundingClientRect();
+    var p = e.touches ? e.touches[0] : e;
+    return { x: p.clientX - r.left, y: p.clientY - r.top };
+  }
+  function start(e){ e.preventDefault(); sigDrawing = true; last = pos(e); }
+  function move(e){
+    if(!sigDrawing) return;
+    e.preventDefault();
+    var p = pos(e);
+    sigCtx.beginPath(); sigCtx.moveTo(last.x,last.y); sigCtx.lineTo(p.x,p.y); sigCtx.stroke();
+    last = p; sigHasStroke = true;
+  }
+  function end(){
+    if(!sigDrawing) return;
+    sigDrawing = false;
+    state.signatureData = canvas.toDataURL("image/png");
+    saveDraft();
+    renderNavOnly();
+  }
+  canvas.addEventListener("pointerdown", start);
+  canvas.addEventListener("pointermove", move);
+  window.addEventListener("pointerup", end);
+  canvas.addEventListener("touchstart", start, {passive:false});
+  canvas.addEventListener("touchmove", move, {passive:false});
+  canvas.addEventListener("touchend", end);
+}
+
+function clearSig(){
+  var canvas = document.getElementById("sigpad");
+  if(sigCtx && canvas){
+    var rect = canvas.getBoundingClientRect();
+    sigCtx.clearRect(0,0,rect.width,rect.height);
+  }
+  state.signatureData = null;
+  sigHasStroke = false;
+  renderNavOnly();
+}
+
+RENDERERS.done = function(card){
+  card.appendChild(el("div",{class:"hero-mark", style:"background:var(--go)"},["✓"]));
+  card.appendChild(el("h2",{class:"section-title"},["Induction pack submitted"]));
+  card.appendChild(el("p",{class:"section-intro"},[
+    "Thanks, " + (state.name||"") + " — that's everything. Your induction pack has been sent to Sedulous Rail and will be filed against your name. You don't need to do anything else."
+  ]));
+  if(state.ppe.ownEquipment==="yes"){
+    card.appendChild(el("div",{class:"flag warn"},["Remember: bring photographic evidence of your own PPE to show your supervisor"]));
+  }
+  card.appendChild(el("div",{class:"note"},["Keep this reference for your records:"]));
+  card.appendChild(el("div",{class:"done-ref"},[state.submissionId || ""]));
+};
+
+/* ---------------- submit ---------------- */
+
+function buildPayload(){
+  return {
+    name: state.name, role: state.role, date: state.date,
+    declaration: DECLARATION_ITEMS.map(function(text,i){ return {text:text, answer: state.declaration[i]}; }),
+    literacy: {
+      times: TIME_QUESTIONS.map(function(q,i){ return {question:q.text, answer:state.literacy.times[i]||"", expected:q.answer}; }),
+      choices: CHOICE_QUESTIONS.map(function(q,i){ return {question:q.text, answer:state.literacy.choices[i]||"", expected:q.answer}; }),
+      spellings: SPELLING_QUESTIONS.map(function(q,i){ return {question:q.text, answer:state.literacy.spellings[i]||"", expected:q.answer}; }),
+      phonetic: PHONETIC_LETTERS.map(function(l,i){ return {letter:l, answer:state.literacy.phonetic[i]||""}; }),
+      score: literacyScore()
+    },
+    workingTimeOptOut: state.optout,
+    jobDescription: {
+      title:"Operative", location: state.jobdesc.location, competencies: state.jobdesc.competencies,
+      otherCompetencyText: state.jobdesc.otherText, experience: state.jobdesc.experience
+    },
+    medicalSelfCertificate: {
+      answers: MEDICAL_ITEMS.map(function(text,i){ return {text:text, answer: state.medical[i]}; }),
+      anyApply: state.medical.indexOf("yes") !== -1
+    },
+    havQuestionnaire: {
+      jobRole: state.hav.jobRole,
+      answers: HAV_MAIN.map(function(q){ return {text:q.text, answer: state.hav.main[q.key]}; }),
+      hobbyDetail: state.hav.hobbyDetail, onsetWhen: state.hav.onsetWhen,
+      frequency: state.hav.frequency, season: state.hav.season,
+      anyApply: HAV_MAIN.some(function(q){ return state.hav.main[q.key]==="yes"; })
+    },
+    ppeRegister: {
+      answers: PPE_ITEMS.map(function(item){ return {text:item.text, answer: state.ppe.answers[item.key]}; }),
+      earsSnrRating: state.ppe.earsDetail, glovesReason: state.ppe.glovesDetail, maskRating: state.ppe.maskRating,
+      ownEquipment: state.ppe.ownEquipment, comfortableAndTrained: state.ppe.comfortable
+    },
+    employeeDeclaration: FINAL_DECLARATION_ITEMS.map(function(item,i){ return {title:item.title, text:item.text, answer: state.finaldeclaration[i]}; }),
+    signatureName: state.signatureName, signatureDate: state.date, signaturePng: state.signatureData,
+    submittedAt: new Date().toISOString()
+  };
+}
+
+function literacyScore(){
+  var correct = 0, total = 0;
+  TIME_QUESTIONS.forEach(function(q,i){ total++; if((state.literacy.times[i]||"").replace(/[^0-9]/g,"")===q.answer) correct++; });
+  CHOICE_QUESTIONS.forEach(function(q,i){ total++; if(state.literacy.choices[i]===q.answer) correct++; });
+  SPELLING_QUESTIONS.forEach(function(q,i){ total++; if((state.literacy.spellings[i]||"").trim().toLowerCase()===q.answer) correct++; });
+  PHONETIC_LETTERS.forEach(function(l,i){ total++; if((state.literacy.phonetic[i]||"").trim().toLowerCase()===PHONETIC_ANSWERS[l]) correct++; });
+  return { correct: correct, total: total, percent: Math.round(100*correct/total) };
+}
+
+function submit(){
+  var section = SECTIONS[state.step];
+  if(!validateSection(section)) return;
+
+  var nextBtn = navbar.querySelector(".btn.primary");
+  if(nextBtn){ nextBtn.disabled = true; nextBtn.textContent = "Submitting…"; }
+
+  var payload = buildPayload();
+  fetch(SCRIPT_URL, {
+    method: "POST",
+    mode: "no-cors",
+    headers: { "Content-Type": "text/plain;charset=utf-8" },
+    body: JSON.stringify(payload)
+  }).then(function(){
+    finishSubmit();
+  }).catch(function(){
+    finishSubmit();
+  });
+}
+
+function finishSubmit(){
+  state.submitted = true;
+  state.submissionId = "SR-" + Date.now().toString(36).toUpperCase();
+  clearDraft();
+  state.step = SECTIONS.length - 1;
+  render();
+}
+
+/* We still need finaldeclaration array populated by the generic yesno renderer,
+   which reads/writes state[section.id] directly — already covered above. */
+
+render();
+})();
+</script>
+</body>
+</html>
