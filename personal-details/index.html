@@ -4,14 +4,14 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex, nofollow">
-<title>Sedulous Rail — PPE Request</title>
-<meta name="description" content="Request your Sedulous Rail PPE on your phone — takes a couple of minutes.">
+<title>Sedulous Rail — Personal & Bank Details</title>
+<meta name="description" content="Provide your personal, bank and next of kin details for Sedulous Rail's records — you'll need the access code you were given.">
 <meta property="og:type" content="website">
-<meta property="og:title" content="Sedulous Rail — PPE Request">
-<meta property="og:description" content="Request your Sedulous Rail PPE on your phone — takes a couple of minutes.">
+<meta property="og:title" content="Sedulous Rail — Personal & Bank Details">
+<meta property="og:description" content="Provide your personal, bank and next of kin details for Sedulous Rail's records — you'll need the access code you were given.">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Sedulous Rail — PPE Request">
-<meta name="twitter:description" content="Request your Sedulous Rail PPE on your phone — takes a couple of minutes.">
+<meta name="twitter:title" content="Sedulous Rail — Personal & Bank Details">
+<meta name="twitter:description" content="Provide your personal, bank and next of kin details for Sedulous Rail's records — you'll need the access code you were given.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Semi+Condensed:wght@500;600;700&family=Public+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
@@ -94,7 +94,7 @@
 
   /* ---- Fields ---- */
   label.field-label{display:block; font-family:var(--font-head); font-weight:600; font-size:14.5px; margin-bottom:6px}
-  input[type=text], input[type=date], input[type=number], select, textarea{
+  input[type=text], input[type=date], input[type=tel], select, textarea{
     width:100%; font-family:var(--font-body); font-size:16px; color:var(--ink);
     background:var(--panel-2); border:1px solid var(--line-strong); border-radius:10px;
     padding:12px 13px; margin-bottom:16px;
@@ -104,11 +104,16 @@
   }
   textarea{min-height:70px; resize:vertical}
 
+  /* ---- PIN entry ---- */
+  input.pin-input{
+    font-family:var(--font-mono); font-size:32px; letter-spacing:.4em; text-align:center;
+    padding:16px 13px;
+  }
+
   /* ---- Yes/No question rows ---- */
   .qrow{padding:16px 0; border-top:1px solid var(--line)}
   .qrow:first-of-type{border-top:none; padding-top:6px}
   .qrow .qtext{font-size:15.5px; line-height:1.5; margin-bottom:10px}
-  .qrow .qtitle{font-family:var(--font-head); font-weight:600; font-size:13.5px; color:var(--ink-muted); text-transform:uppercase; letter-spacing:.05em; margin-bottom:4px}
   .yn{display:flex; gap:8px}
   .yn button{
     flex:1; padding:13px 0; font-family:var(--font-head); font-weight:700; font-size:15px;
@@ -123,9 +128,6 @@
     background:var(--panel-2); color:var(--ink); cursor:pointer; font-family:var(--font-body); font-weight:600;
   }
   .choice-row button.sel{background:var(--accent-soft); border-color:var(--accent); color:var(--accent)}
-  .conditional{margin-top:10px; padding-top:2px}
-  .conditional-grid{display:grid; grid-template-columns:1fr 1fr 1fr; gap:8px; margin-top:10px}
-  .conditional-grid input{margin-bottom:0}
 
   .progress-count{font-family:var(--font-mono); font-size:12px; color:var(--ink-muted); margin-top:2px}
 
@@ -174,14 +176,13 @@
   @media (max-width:420px){
     .section-title{font-size:20px}
     canvas#sigpad{height:160px}
-    .conditional-grid{grid-template-columns:1fr}
   }
 </style>
 </head>
 <body>
 <div class="topbar">
   <div class="brand">Sedulous Rail</div>
-  <div class="doc-ref">FORM 12 · ISSUE 1</div>
+  <div class="doc-ref">PERSONAL DETAILS</div>
 </div>
 <div class="rail-wrap">
   <div class="rail" id="rail"></div>
@@ -196,94 +197,35 @@
 (function(){
 "use strict";
 
-var SCRIPT_URL = "PASTE_PPE_APPS_SCRIPT_EXEC_URL_HERE";
-var DRAFT_KEY = "sedulous_ppe_draft_v1";
-
-/* ---------------- content data (transcribed from Form 12, Issue 1 — employee-facing half only) ---------------- */
-
-var PPE_CATEGORIES = [
-  { name:"Workwear", items:[
-    { key:"polo", text:"Polo Shirt" },
-    { key:"tshirt", text:"T-Shirt" },
-    { key:"cargoTrouser", text:"Blue Cargo Trouser" },
-    { key:"jumper", text:"Blue Jumper" },
-    { key:"fleece", text:"Blue Fleece" }
-  ]},
-  { name:"Hi-Vis", items:[
-    { key:"hivisVest", text:"Hi-Vis Vest — Rail Spec (RIS-3279-TOM)" },
-    { key:"hivisJacket", text:"Hi-Vis Bomber Jacket" },
-    { key:"hivisTrouser", text:"Hi-Vis Trouser" }
-  ]},
-  { name:"Footwear & Head Protection", items:[
-    { key:"boots", text:"Safety Boots (EN ISO 20345:2011 S3)" },
-    { key:"hardhat", text:"Hard Hat (EN 397)" },
-    { key:"bumpcap", text:"Bump Cap (EN 812:2012)" },
-    { key:"hardhatFaceShield", text:"Hard Hat (Face Shield)" }
-  ]},
-  { name:"Hearing & Eye Protection", items:[
-    { key:"earDefenders", text:"Ear Defenders (EN 352-1)" },
-    { key:"earDefendersHardHat", text:"Ear Defenders — Hard Hat Attachment (EN 352:2002)" },
-    { key:"glasses", text:"Safety Glasses (EN 166 1F)" },
-    { key:"glassesCase", text:"Safety Glasses Case" },
-    { key:"goggles", text:"Safety Goggles (EN 166 1B)" }
-  ]},
-  { name:"Other Protective Equipment", items:[
-    { key:"kneepads", text:"Knee Pads (EN 14404:2004+A1)" },
-    { key:"balaclava", text:"LUL Approved Balaclava" }
-  ]},
-  { name:"Respiratory", items:[
-    { key:"respirator", text:"Half Face Mask Respirator (EN 140:1998)" },
-    { key:"respiratorFilter", text:"Respirator Filter (EN 143:2006)" },
-    { key:"faceMask", text:"Disposable Face Masks (FFP2)" },
-    { key:"faceCovering", text:"Reusable Face Covering" }
-  ]},
-  { name:"Hand Protection", items:[
-    { key:"cutGloves", text:"Cut Resistant Gloves (Level 5)" },
-    { key:"nitrileGloves", text:"Nitrile Gloves" },
-    { key:"gauntletGloves", text:"Gauntlet Gloves" },
-    { key:"vinylGloves", text:"Disposable Vinyl Gloves (100 per box)" }
-  ]},
-  { name:"Hygiene & First Aid", items:[
-    { key:"sanitiser", text:"Hand Sanitiser (alcohol-based)" },
-    { key:"wipes", text:"Disinfectant Wipes (150 wipes per tub)" },
-    { key:"eyewash", text:"Eye Wash Station" },
-    { key:"firstaid", text:"First Aid Kit (10 Man)" },
-    { key:"spillkit", text:"Spill Kit (50L General Purpose)" }
-  ]}
-];
-
-var REASON_OPTIONS = ["New","Defective","Lost","Wear & tear","Other"];
-
-var PPE_DECLARATION = "I confirm the above is an accurate record of the PPE I am requesting, and that once issued I will use, maintain and store it as instructed. I understand I may not use PPE/RPE other than that issued by the company.";
+var SCRIPT_URL = "PASTE_PERSONALDETAILS_APPS_SCRIPT_EXEC_URL_HERE";
+var DRAFT_KEY = "sedulous_personaldetails_draft_v1";
 
 /* ---------------- section list ---------------- */
 
 var SECTIONS = [
-  { id:"start", name:"Your details", type:"start" }
+  { id:"pin", name:"Access code", type:"pin" },
+  { id:"personal", name:"Your details", type:"personal" },
+  { id:"tax", name:"NI & UTR", type:"tax" },
+  { id:"bank", name:"Bank details", type:"bank" },
+  { id:"nok", name:"Next of kin", type:"nok" },
+  { id:"declaration", name:"Declaration", type:"declaration" },
+  { id:"signature", name:"Sign & submit", type:"signature" },
+  { id:"done", name:"Submitted", type:"done" }
 ];
-PPE_CATEGORIES.forEach(function(cat, i){
-  SECTIONS.push({ id:"cat"+i, name:cat.name, type:"ppeitems", categoryIndex:i });
-});
-SECTIONS.push({ id:"declaration", name:"Declaration", type:"ppedeclaration" });
-SECTIONS.push({ id:"signature", name:"Sign & submit", type:"signature" });
-SECTIONS.push({ id:"done", name:"Submitted", type:"done" });
 
 /* ---------------- state ---------------- */
 
 var state = {
   step: 0,
-  name:"", division:"", date: todayISO(),
-  reason: null, reasonOtherText:"",
-  ppe: {},
-  agree: null,
+  pin:"",
+  name:"", address:"", dob:"",
+  niNumber:"", utr:"",
+  bankAccountName:"", sortCode:"", accountNumber:"", rollNumber:"",
+  nokName:"", nokRelationship:"", nokPhone:"",
+  agree:null, date: todayISO(),
   signatureName:"", signatureData:null,
   submitted:false, submissionId:null
 };
-PPE_CATEGORIES.forEach(function(cat){
-  cat.items.forEach(function(item){
-    state.ppe[item.key] = { need:null, cbl:"", size:"", qty:"" };
-  });
-});
 loadDraft();
 
 function todayISO(){ var d=new Date(); return d.toISOString().slice(0,10); }
@@ -293,10 +235,7 @@ function loadDraft(){
     var raw = localStorage.getItem(DRAFT_KEY);
     if(raw){
       var saved = JSON.parse(raw);
-      if(saved && !saved.submitted){
-        Object.assign(state, saved);
-        if(saved.ppe){ Object.assign(state.ppe, saved.ppe); }
-      }
+      if(saved && !saved.submitted){ Object.assign(state, saved); }
     }
   }catch(e){}
 }
@@ -376,12 +315,12 @@ function renderNav(section){
 
 function validateSection(section){
   switch(section.type){
-    case "start": return state.name.trim().length>1 && state.division.trim().length>0 && !!state.reason &&
-      (state.reason!=="Other" || state.reasonOtherText.trim().length>0);
-    case "ppeitems":
-      var cat = PPE_CATEGORIES[section.categoryIndex];
-      return cat.items.every(function(item){ return state.ppe[item.key].need==="yes" || state.ppe[item.key].need==="no"; });
-    case "ppedeclaration": return state.agree==="yes";
+    case "pin": return /^[0-9]{4}$/.test(state.pin);
+    case "personal": return state.name.trim().length>1 && state.address.trim().length>3 && !!state.dob;
+    case "tax": return state.niNumber.trim().length>1 && state.utr.trim().length>1;
+    case "bank": return state.bankAccountName.trim().length>1 && state.sortCode.trim().length>1 && state.accountNumber.trim().length>1;
+    case "nok": return state.nokName.trim().length>1 && state.nokRelationship.trim().length>1 && state.nokPhone.trim().length>1;
+    case "declaration": return state.agree==="yes";
     case "signature": return state.signatureName.trim().length>1 && !!state.signatureData;
     default: return true;
   }
@@ -391,35 +330,30 @@ function validateSection(section){
 
 var RENDERERS = {};
 
-RENDERERS.start = function(card){
+function field(card, labelText, key, opts){
+  opts = opts || {};
+  card.appendChild(el("label",{class:"field-label"},[labelText]));
+  card.appendChild(el("input",{
+    type: opts.type || "text",
+    inputmode: opts.inputmode || "",
+    value: state[key],
+    placeholder: opts.placeholder || "",
+    class: opts.cls || "",
+    oninput:function(e){ state[key] = e.target.value; renderNavOnly(); }
+  }));
+}
+
+RENDERERS.pin = function(card){
   card.appendChild(el("div",{class:"hero-mark"},["SR"]));
-  card.appendChild(el("h1",{class:"section-title"},["PPE Request"]));
+  card.appendChild(el("h1",{class:"section-title"},["Personal & Bank Details"]));
   card.appendChild(el("p",{class:"section-intro"},[
-    "Tell us what PPE you need. Initial issue is free of charge; a pro-rata charge may apply for replacement only if it's proven the equipment was used for purposes other than work. This is a request — the office will confirm what's actually issued."
+    "This form collects your address, National Insurance number, UTR, bank details and next of kin, for Sedulous Rail's records. It's not shared with anyone outside the company, including auditors. Takes about 5 minutes."
   ]));
-
-  card.appendChild(el("label",{class:"field-label", for:"f-name"},["Full name"]));
-  card.appendChild(el("input",{type:"text", id:"f-name", value:state.name, placeholder:"e.g. Jordan Miles",
-    oninput:function(e){ state.name = e.target.value; renderNavOnly(); }}));
-
-  card.appendChild(el("label",{class:"field-label", for:"f-division"},["Division"]));
-  card.appendChild(el("input",{type:"text", id:"f-division", value:state.division, placeholder:"e.g. Rail Operations",
-    oninput:function(e){ state.division = e.target.value; renderNavOnly(); }}));
-
-  card.appendChild(el("label",{class:"field-label"},["Reason for request"]));
-  var row = el("div",{class:"choice-row"});
-  REASON_OPTIONS.forEach(function(opt){
-    row.appendChild(el("button",{class:(state.reason===opt?"sel":""), onclick:function(){ state.reason=opt; render(); }},[opt]));
-  });
-  card.appendChild(row);
-  if(state.reason==="Other"){
-    card.appendChild(el("div",{class:"conditional"},[el("input",{type:"text", placeholder:"Please state the reason", value:state.reasonOtherText,
-      oninput:function(e){ state.reasonOtherText = e.target.value; renderNavOnly(); }})]));
-  }
-
-  card.appendChild(el("label",{class:"field-label", for:"f-date", style:"margin-top:16px"},["Today's date"]));
-  card.appendChild(el("input",{type:"date", id:"f-date", value:state.date,
-    oninput:function(e){ state.date = e.target.value; }}));
+  card.appendChild(el("label",{class:"field-label"},["Enter the 4-digit access code you were given"]));
+  card.appendChild(el("input",{type:"text", inputmode:"numeric", maxlength:"4", class:"pin-input",
+    value:state.pin, placeholder:"••••",
+    oninput:function(e){ state.pin = e.target.value.replace(/[^0-9]/g,"").slice(0,4); e.target.value = state.pin; renderNavOnly(); }}));
+  card.appendChild(el("div",{class:"note"},["Don't have a code? Ask whoever sent you this link — it's given separately from the link itself, not written down anywhere on this page."]));
 };
 
 function renderNavOnly(){
@@ -428,36 +362,43 @@ function renderNavOnly(){
   saveDraft();
 }
 
-RENDERERS.ppeitems = function(card, section){
-  var cat = PPE_CATEGORIES[section.categoryIndex];
-  card.appendChild(el("h2",{class:"section-title"},[cat.name]));
-  card.appendChild(el("p",{class:"section-intro"},["Do you need any of the following?"]));
-
-  cat.items.forEach(function(item){
-    var rec = state.ppe[item.key];
-    var row = el("div",{class:"qrow"});
-    row.appendChild(el("div",{class:"qtext"},[item.text]));
-    var yn = el("div",{class:"yn"});
-    yn.appendChild(el("button",{class:"yes"+(rec.need==="yes"?" sel":""), onclick:function(){ rec.need="yes"; render(); }},["Yes"]));
-    yn.appendChild(el("button",{class:"no"+(rec.need==="no"?" sel":""), onclick:function(){ rec.need="no"; rec.cbl=""; rec.size=""; rec.qty=""; render(); }},["No"]));
-    row.appendChild(yn);
-    card.appendChild(row);
-    if(rec.need==="yes"){
-      var grid = el("div",{class:"conditional-grid"});
-      grid.appendChild(el("input",{type:"text", placeholder:"CB/L", value:rec.cbl, oninput:function(e){ rec.cbl=e.target.value; }}));
-      grid.appendChild(el("input",{type:"text", placeholder:"Size", value:rec.size, oninput:function(e){ rec.size=e.target.value; }}));
-      grid.appendChild(el("input",{type:"text", inputmode:"numeric", placeholder:"Qty", value:rec.qty, oninput:function(e){ rec.qty=e.target.value; }}));
-      card.appendChild(grid);
-    }
-  });
-
-  var answered = cat.items.filter(function(item){ return state.ppe[item.key].need; }).length;
-  card.appendChild(el("div",{class:"progress-count"},[answered + " of " + cat.items.length + " answered"]));
+RENDERERS.personal = function(card){
+  card.appendChild(el("h2",{class:"section-title"},["Your details"]));
+  field(card, "Full name", "name", {placeholder:"e.g. Jordan Miles"});
+  field(card, "Home address", "address", {placeholder:"Full address including postcode"});
+  card.appendChild(el("label",{class:"field-label"},["Date of birth"]));
+  card.appendChild(el("input",{type:"date", value:state.dob, oninput:function(e){ state.dob=e.target.value; renderNavOnly(); }}));
 };
 
-RENDERERS.ppedeclaration = function(card){
+RENDERERS.tax = function(card){
+  card.appendChild(el("h2",{class:"section-title"},["NI & UTR"]));
+  card.appendChild(el("p",{class:"section-intro"},["Your National Insurance number and Unique Taxpayer Reference, exactly as they appear on your NI card/letter and HMRC UTR letter."]));
+  field(card, "National Insurance number", "niNumber", {placeholder:"e.g. QQ123456C"});
+  field(card, "UTR (Unique Taxpayer Reference)", "utr", {placeholder:"10-digit number", inputmode:"numeric"});
+};
+
+RENDERERS.bank = function(card){
+  card.appendChild(el("h2",{class:"section-title"},["Bank details"]));
+  card.appendChild(el("p",{class:"section-intro"},["Where your pay should be sent. Double-check these carefully — an incorrect sort code or account number can misdirect a payment."]));
+  field(card, "Account name (as it appears on your bank account)", "bankAccountName", {placeholder:"e.g. J Miles"});
+  field(card, "Sort code", "sortCode", {placeholder:"e.g. 12-34-56", inputmode:"numeric"});
+  field(card, "Account number", "accountNumber", {placeholder:"e.g. 12345678", inputmode:"numeric"});
+  field(card, "Building Society Roll Number (only if you have one)", "rollNumber", {placeholder:"Leave blank if not applicable"});
+};
+
+RENDERERS.nok = function(card){
+  card.appendChild(el("h2",{class:"section-title"},["Next of kin"]));
+  card.appendChild(el("p",{class:"section-intro"},["Who we should contact in an emergency."]));
+  field(card, "Full name", "nokName", {placeholder:"e.g. Michelle Miles"});
+  field(card, "Relationship to you", "nokRelationship", {placeholder:"e.g. Partner, Parent, Sibling"});
+  field(card, "Phone number", "nokPhone", {placeholder:"e.g. 07700 900123", type:"tel"});
+};
+
+RENDERERS.declaration = function(card){
   card.appendChild(el("h2",{class:"section-title"},["Declaration"]));
-  card.appendChild(el("p",{class:"section-intro"},[PPE_DECLARATION]));
+  card.appendChild(el("p",{class:"section-intro"},[
+    "I confirm the personal, tax, bank and next of kin details provided are accurate to the best of my knowledge, and consent to Sedulous Rail Ltd holding this information for employment, payroll and Sentinel Scheme administration purposes."
+  ]));
   var row = el("div",{class:"qrow"});
   row.appendChild(el("div",{class:"qtext"},["Do you confirm the above?"]));
   var yn = el("div",{class:"yn"});
@@ -466,7 +407,7 @@ RENDERERS.ppedeclaration = function(card){
   row.appendChild(yn);
   card.appendChild(row);
   if(state.agree==="no"){
-    card.appendChild(el("div",{class:"note"},["You need to confirm this to submit your request. If you have questions, speak to your manager first."]));
+    card.appendChild(el("div",{class:"note"},["You need to confirm this to submit. If you have questions, speak to your manager first."]));
   }
 };
 
@@ -475,7 +416,7 @@ var sigCtx=null, sigDrawing=false, sigHasStroke=false;
 RENDERERS.signature = function(card){
   card.appendChild(el("h2",{class:"section-title"},["Sign & submit"]));
   card.appendChild(el("p",{class:"section-intro"},[
-    "By signing below I confirm that the information provided in this PPE request is true and accurate to the best of my knowledge."
+    "By signing below I confirm that the information provided in this form is true and accurate to the best of my knowledge."
   ]));
 
   card.appendChild(el("label",{class:"field-label"},["Type your full name (this is your legal signature)"]));
@@ -556,9 +497,9 @@ function clearSig(){
 
 RENDERERS.done = function(card){
   card.appendChild(el("div",{class:"hero-mark", style:"background:var(--go)"},["✓"]));
-  card.appendChild(el("h2",{class:"section-title"},["Request submitted"]));
+  card.appendChild(el("h2",{class:"section-title"},["Submitted"]));
   card.appendChild(el("p",{class:"section-intro"},[
-    "Thanks, " + (state.name||"") + " — your PPE request has been sent to Sedulous Rail. It'll be issued and confirmed by the office. You don't need to do anything else."
+    "Thanks, " + (state.name||"") + " — your details have been sent to Sedulous Rail and will be filed against your name. You don't need to do anything else."
   ]));
   card.appendChild(el("div",{class:"note"},["Keep this reference for your records:"]));
   card.appendChild(el("div",{class:"done-ref"},[state.submissionId || ""]));
@@ -567,21 +508,13 @@ RENDERERS.done = function(card){
 /* ---------------- submit ---------------- */
 
 function buildPayload(){
-  var items = [];
-  PPE_CATEGORIES.forEach(function(cat){
-    cat.items.forEach(function(item){
-      var rec = state.ppe[item.key];
-      items.push({
-        category: cat.name, item: item.text, needed: rec.need,
-        cbl: rec.cbl, size: rec.size, qty: rec.qty
-      });
-    });
-  });
   return {
-    name: state.name, division: state.division, date: state.date,
-    reason: state.reason, reasonOtherText: state.reasonOtherText,
-    items: items,
-    requestedCount: items.filter(function(i){ return i.needed==="yes"; }).length,
+    pin: state.pin,
+    name: state.name, address: state.address, dob: state.dob,
+    niNumber: state.niNumber, utr: state.utr,
+    bankAccountName: state.bankAccountName, sortCode: state.sortCode,
+    accountNumber: state.accountNumber, rollNumber: state.rollNumber,
+    nokName: state.nokName, nokRelationship: state.nokRelationship, nokPhone: state.nokPhone,
     declarationAgreed: state.agree,
     signatureName: state.signatureName, signatureDate: state.date, signaturePng: state.signatureData,
     submittedAt: new Date().toISOString()
@@ -610,7 +543,7 @@ function submit(){
 
 function finishSubmit(){
   state.submitted = true;
-  state.submissionId = "SR-PPE-" + Date.now().toString(36).toUpperCase();
+  state.submissionId = "SR-PD-" + Date.now().toString(36).toUpperCase();
   clearDraft();
   state.step = SECTIONS.length - 1;
   render();
