@@ -1,0 +1,557 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sedulous Rail — Contract of Sponsorship</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Semi+Condensed:wght@500;600;700&family=Public+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#eef1ec; --panel:#ffffff; --panel-2:#f7f8f5;
+    --ink:#1a2420; --ink-muted:#54615a; --line:#c9d0c6; --line-strong:#a7b0a3;
+    --accent:#d45b12; --accent-ink:#ffffff; --accent-soft:#f6ded0;
+    --go:#2e6b3e; --go-soft:#dcece1; --stop:#b3261e; --stop-soft:#f6dcd9;
+    --shadow: 0 1px 2px rgba(20,26,20,.06), 0 6px 16px rgba(20,26,20,.06);
+    --radius: 14px;
+    --font-head: 'Barlow Semi Condensed', 'Arial Narrow', sans-serif;
+    --font-body: 'Public Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
+    --font-mono: 'IBM Plex Mono', ui-monospace, Menlo, monospace;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --paper:#12181a; --panel:#1b2225; --panel-2:#20282b;
+      --ink:#e8ece6; --ink-muted:#a7b1aa; --line:#333d39; --line-strong:#47524c;
+      --accent:#f0812f; --accent-ink:#1a1006; --accent-soft:#3a2515;
+      --go:#5cae6c; --go-soft:#1c3324; --stop:#e5695f; --stop-soft:#3a201d;
+      --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 20px rgba(0,0,0,.35);
+    }
+  }
+  :root[data-theme="dark"]{
+    --paper:#12181a; --panel:#1b2225; --panel-2:#20282b;
+    --ink:#e8ece6; --ink-muted:#a7b1aa; --line:#333d39; --line-strong:#47524c;
+    --accent:#f0812f; --accent-ink:#1a1006; --accent-soft:#3a2515;
+    --go:#5cae6c; --go-soft:#1c3324; --stop:#e5695f; --stop-soft:#3a201d;
+    --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 20px rgba(0,0,0,.35);
+  }
+
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{
+    background:var(--paper); color:var(--ink);
+    font-family:var(--font-body);
+    -webkit-font-smoothing:antialiased;
+    padding-inline:16px;
+    padding-block:0;
+    min-height:100vh;
+  }
+  h1,h2,h3{font-family:var(--font-head); font-weight:700; text-wrap:balance; margin:0}
+  .eyebrow{
+    font-family:var(--font-head); font-weight:600; letter-spacing:.09em; text-transform:uppercase;
+    font-size:12.5px; color:var(--ink-muted);
+  }
+  a{color:var(--accent)}
+
+  /* ---- Top identity bar ---- */
+  .topbar{
+    max-width:640px; margin:0 auto; padding-top:18px;
+    display:flex; align-items:baseline; justify-content:space-between; gap:12px;
+  }
+  .topbar .brand{font-family:var(--font-head); font-weight:700; font-size:19px; letter-spacing:.01em}
+  .topbar .doc-ref{font-family:var(--font-mono); font-size:11.5px; color:var(--ink-muted)}
+
+  /* ---- Sleeper-tick progress rail ---- */
+  .rail-wrap{max-width:640px; margin:14px auto 0; padding:0 2px}
+  .rail{display:flex; gap:4px; align-items:stretch; height:8px}
+  .tie{flex:1; border-radius:2px; background:var(--line); transition:background .25s ease}
+  .tie.done{background:var(--go)}
+  .tie.current{background:var(--accent)}
+  .rail-caption{display:flex; justify-content:space-between; margin-top:7px}
+  .rail-caption span{font-family:var(--font-mono); font-size:11px; color:var(--ink-muted)}
+
+  /* ---- Layout ---- */
+  main{max-width:640px; margin:0 auto; padding-bottom:120px}
+  .card{
+    background:var(--panel); border:1px solid var(--line); border-radius:var(--radius);
+    box-shadow:var(--shadow); padding:22px 20px; margin-top:18px;
+  }
+  .card + .card{margin-top:14px}
+  .section-title{font-size:23px; margin-top:6px}
+  .section-intro{color:var(--ink-muted); font-size:14.5px; line-height:1.55; margin-top:8px}
+  .note{
+    background:var(--panel-2); border:1px solid var(--line); border-radius:10px;
+    padding:12px 14px; font-size:13.5px; color:var(--ink-muted); line-height:1.5; margin-top:14px;
+  }
+
+  /* ---- Fields ---- */
+  label.field-label{display:block; font-family:var(--font-head); font-weight:600; font-size:14.5px; margin-bottom:6px}
+  input[type=text], input[type=date], select, textarea{
+    width:100%; font-family:var(--font-body); font-size:16px; color:var(--ink);
+    background:var(--panel-2); border:1px solid var(--line-strong); border-radius:10px;
+    padding:12px 13px; margin-bottom:16px;
+  }
+  input:focus, select:focus, textarea:focus, button:focus-visible{
+    outline:2px solid var(--accent); outline-offset:1px;
+  }
+  textarea{min-height:70px; resize:vertical}
+
+  /* ---- Yes/No question rows ---- */
+  .qrow{padding:16px 0; border-top:1px solid var(--line)}
+  .qrow:first-of-type{border-top:none; padding-top:6px}
+  .qrow .qtext{font-size:15.5px; line-height:1.5; margin-bottom:10px}
+  .qrow .qtitle{font-family:var(--font-head); font-weight:600; font-size:13.5px; color:var(--ink-muted); text-transform:uppercase; letter-spacing:.05em; margin-bottom:4px}
+  .yn{display:flex; gap:8px}
+  .yn button{
+    flex:1; padding:13px 0; font-family:var(--font-head); font-weight:700; font-size:15px;
+    letter-spacing:.03em; border-radius:10px; border:1.5px solid var(--line-strong);
+    background:var(--panel-2); color:var(--ink); cursor:pointer;
+  }
+  .yn button.yes.sel{background:var(--go-soft); border-color:var(--go); color:var(--go)}
+  .yn button.no.sel{background:var(--stop-soft); border-color:var(--stop); color:var(--stop)}
+  .choice-row{display:flex; gap:8px; margin-top:2px}
+  .choice-row button{
+    flex:1; padding:12px 8px; font-size:15px; border-radius:10px; border:1.5px solid var(--line-strong);
+    background:var(--panel-2); color:var(--ink); cursor:pointer; font-family:var(--font-body); font-weight:600;
+  }
+  .choice-row button.sel{background:var(--accent-soft); border-color:var(--accent); color:var(--accent)}
+  .conditional{margin-top:10px; padding-top:2px}
+
+  .progress-count{font-family:var(--font-mono); font-size:12px; color:var(--ink-muted); margin-top:2px}
+
+  ul.acc-list{margin:12px 0 0; padding-left:20px; font-size:14.5px; line-height:1.6; color:var(--ink)}
+  ul.acc-list li{margin-bottom:6px}
+
+  /* ---- Signature ---- */
+  .sig-wrap{border:1.5px dashed var(--line-strong); border-radius:12px; background:var(--panel-2); overflow:hidden}
+  canvas#sigpad{width:100%; height:180px; touch-action:none; display:block}
+  .sig-actions{display:flex; justify-content:space-between; align-items:center; margin-top:8px}
+  .sig-actions button{
+    font-family:var(--font-head); font-weight:600; font-size:13px; letter-spacing:.03em;
+    background:none; border:none; color:var(--ink-muted); cursor:pointer; padding:6px 0;
+  }
+
+  /* ---- Bottom nav ---- */
+  .navbar{
+    position:fixed; left:0; right:0; bottom:0; background:var(--paper);
+    border-top:1px solid var(--line); padding:12px 16px calc(env(safe-area-inset-bottom) + 12px);
+  }
+  .navbar-inner{max-width:640px; margin:0 auto; display:flex; gap:10px}
+  .btn{
+    flex:1; font-family:var(--font-head); font-weight:700; font-size:16px; letter-spacing:.02em;
+    padding:15px 0; border-radius:11px; border:1.5px solid var(--line-strong); cursor:pointer;
+    background:var(--panel); color:var(--ink);
+  }
+  .btn.primary{background:var(--accent); border-color:var(--accent); color:var(--accent-ink)}
+  .btn.primary:disabled{opacity:.45; cursor:not-allowed}
+  .btn.ghost{flex:0 0 84px}
+
+  .flag{
+    display:inline-flex; align-items:center; gap:6px; font-family:var(--font-head); font-weight:600;
+    font-size:12.5px; letter-spacing:.03em; padding:4px 10px; border-radius:99px; margin-top:10px;
+  }
+  .flag.warn{background:var(--stop-soft); color:var(--stop)}
+
+  /* ---- Start / done screens ---- */
+  .hero-mark{
+    width:44px; height:44px; border-radius:10px; background:var(--accent); color:var(--accent-ink);
+    display:flex; align-items:center; justify-content:center; font-family:var(--font-head); font-weight:700; font-size:20px;
+    margin-bottom:14px;
+  }
+  .done-ref{font-family:var(--font-mono); font-size:14px; background:var(--panel-2); border:1px solid var(--line);
+    border-radius:8px; padding:10px 12px; margin-top:14px; word-break:break-all}
+
+  @media (max-width:420px){
+    .section-title{font-size:20px}
+    canvas#sigpad{height:160px}
+  }
+</style>
+</head>
+<body>
+<div class="topbar">
+  <div class="brand">Sedulous Rail</div>
+  <div class="doc-ref">FORM 18 · ISSUE 1</div>
+</div>
+<div class="rail-wrap">
+  <div class="rail" id="rail"></div>
+  <div class="rail-caption"><span id="railLabel">SECTION 1 OF 10</span><span id="railName"></span></div>
+</div>
+<main id="app"></main>
+<div class="navbar">
+  <div class="navbar-inner" id="navbar"></div>
+</div>
+
+<script>
+(function(){
+"use strict";
+
+var SCRIPT_URL = "PASTE_SPONSORSHIP_APPS_SCRIPT_EXEC_URL_HERE";
+var DRAFT_KEY = "sedulous_sponsorship_draft_v1";
+
+/* ---------------- content data (transcribed from Form 18, Issue 1) ---------------- */
+
+var SPONSOR_COMMITMENTS = [
+  "Providing you with a valid Sentinel Smart Card.",
+  "Undertaking an induction briefing with you which will include, as a minimum, the rules and responsibilities of the Sentinel Scheme.",
+  "Providing you with suitable protective equipment, so marked as to identify who you are working for when on the NRMI, and suitable training to be able to use that protective equipment effectively.",
+  "Providing you with regular briefings on changes to Network Rail/Railway Industry standards, Rule Book and Sentinel Scheme Rule updates.",
+  "Monitoring your training and assessments to ensure competence at required intervals.",
+  "Providing you with Safety Critical Equipment to enable you to undertake your role (jointly with any Sub-sponsor where appropriate).",
+  "Providing you with personal issue information such as handbooks, standards and relevant information.",
+  "Providing you with advice, guidance or instruction on any restrictions based on medication and other medical fitness issues.",
+  "Ensuring that we mentor and support you to develop your competence.",
+  "Having in place clear contractual arrangements between us and yourselves, and whether Sub-Sponsors are permitted.",
+  "Monitoring and managing your working hours under our Contract of Sponsorship. Shifts worked with Sub-Sponsors must be considered in the monitoring of working hours and the management of fatigue.",
+  "Agreeing any sub-sponsorship arrangements with you and to grant permission to any Sub-sponsor to use our resources.",
+  "Undertaking a local investigation process where any suspected breach of the Sentinel Scheme Rules becomes apparent.",
+  "Conducting an annual review of your continued suitability to work on the infrastructure considering behaviours and performance of safety critical duties and identify development requirements.",
+  "Collating information from Sub-sponsors to enable conclusion of the local investigation.",
+  "Maintaining records of local investigations and request a formal review where a Scheme Outcome is recommended following a local investigation.",
+  "Providing a reason for de-sponsoring you where requested by yourselves.",
+  "Conducting a local investigation before de-sponsoring for any breach of the Sentinel Scheme Rules where applicable.",
+  "Collating and maintaining all records associated with the Contract of Sponsorship which has been issued to you.",
+  "Requesting a temporary suspension pending the conclusion of local investigation where appropriate.",
+  "De-sponsor you at your request within five working days."
+];
+
+var YOUR_OBLIGATIONS = [
+  "Carry your Sentinel Smart Card at all times while working on the NRMI and co-operate with us to ensure the personal information held in the Sentinel Scheme Database and printed on the Sentinel Smart Card remains accurate.",
+  "Follow the rules of personal accountability for working safely on the NRMI, including compliance with the Lifesaving Rules, care and correct use of PPE, attendance and compliance with Safety Briefings, Rule Book and Sentinel Scheme Rules updates.",
+  "Notify us of any competences or training requirements including recertification courses.",
+  "Manage your Sponsor relationships at all times when working on the NRMI, and in particular:",
+  "Know the identity of your Primary Sponsor.",
+  "Know which Sub-Sponsor you are working for (when you are not working for us).",
+  "Provide the correct name of the Sponsor you are working for when booking into site.",
+  "Notify the Primary Sponsor of any changes in circumstance including health issues, that may require the Primary Sponsor to take action to ensure your continued fitness for work trackside.",
+  "Notify your supervisor if you no longer wish to be sponsored by us so you can be de-sponsored. Change of sponsorship can be requested online through My Sentinel.",
+  "Co-operate with any investigation into an alleged breach of the Sentinel Scheme Rules by us or your Sub-Sponsor.",
+  "Have confirmation that you have approval from the Primary Sponsor before working for a Sub-Sponsor."
+];
+
+/* ---------------- section list ---------------- */
+
+var SECTIONS = [
+  { id:"start", name:"Your details", type:"start" },
+  { id:"commitments", name:"What we commit to", type:"info", items:SPONSOR_COMMITMENTS,
+    intro:"As your Primary Sponsor, Sedulous Rail Ltd commits to the following under the Sentinel Scheme." },
+  { id:"obligations", name:"Your responsibilities", type:"agree", items:YOUR_OBLIGATIONS,
+    intro:"In return, as the sponsored individual, you agree to the following." },
+  { id:"signature", name:"Sign & submit", type:"signature" },
+  { id:"done", name:"Submitted", type:"done" }
+];
+
+/* ---------------- state ---------------- */
+
+var state = {
+  step: 0,
+  name:"", sentinelNumber:"", relationship:"", date: todayISO(),
+  agree: null,
+  signatureName:"", signatureData:null,
+  submitted:false, submissionId:null
+};
+loadDraft();
+
+function todayISO(){ var d=new Date(); return d.toISOString().slice(0,10); }
+
+function loadDraft(){
+  try{
+    var raw = localStorage.getItem(DRAFT_KEY);
+    if(raw){
+      var saved = JSON.parse(raw);
+      if(saved && !saved.submitted){ Object.assign(state, saved); }
+    }
+  }catch(e){}
+}
+function saveDraft(){
+  try{ localStorage.setItem(DRAFT_KEY, JSON.stringify(state)); }catch(e){}
+}
+function clearDraft(){
+  try{ localStorage.removeItem(DRAFT_KEY); }catch(e){}
+}
+
+/* ---------------- render ---------------- */
+
+var app = document.getElementById("app");
+var navbar = document.getElementById("navbar");
+
+function el(tag, attrs, children){
+  var e = document.createElement(tag);
+  attrs = attrs || {};
+  for(var k in attrs){
+    if(k==="class") e.className = attrs[k];
+    else if(k==="html") e.innerHTML = attrs[k];
+    else if(k.indexOf("on")===0) e.addEventListener(k.slice(2), attrs[k]);
+    else e.setAttribute(k, attrs[k]);
+  }
+  (children||[]).forEach(function(c){ if(c) e.appendChild(typeof c==="string"?document.createTextNode(c):c); });
+  return e;
+}
+
+function render(){
+  renderRail();
+  var section = SECTIONS[state.step];
+  app.innerHTML = "";
+  var card = el("div",{class:"card"});
+  app.appendChild(card);
+
+  RENDERERS[section.type](card, section);
+  renderNav(section);
+  saveDraft();
+}
+
+function renderRail(){
+  var rail = document.getElementById("rail");
+  rail.innerHTML = "";
+  SECTIONS.forEach(function(s, i){
+    if(s.type==="done") return;
+    var cls = "tie" + (i < state.step ? " done" : i===state.step ? " current" : "");
+    rail.appendChild(el("div",{class:cls}));
+  });
+  var total = SECTIONS.length - 1;
+  document.getElementById("railLabel").textContent = state.step < total
+    ? "SECTION " + (state.step+1) + " OF " + total
+    : "COMPLETE";
+  document.getElementById("railName").textContent = (SECTIONS[state.step].name||"").toUpperCase();
+}
+
+function renderNav(section){
+  navbar.innerHTML = "";
+  if(section.type==="done"){ return; }
+  var isFirst = state.step===0;
+  var isLastBeforeDone = SECTIONS[state.step+1] && SECTIONS[state.step+1].type==="done";
+
+  if(!isFirst){
+    navbar.appendChild(el("button",{class:"btn ghost", onclick:function(){ state.step--; render(); window.scrollTo(0,0); }},["Back"]));
+  }
+  var nextLabel = isLastBeforeDone ? "Review & sign" : "Next";
+  var canGo = validateSection(section);
+  var nextBtn = el("button",{class:"btn primary" + (canGo?"":""), onclick:function(){
+    if(!validateSection(section)) return;
+    if(section.type==="signature"){ submit(); return; }
+    state.step++; render(); window.scrollTo(0,0);
+  }},[nextLabel]);
+  if(!canGo) nextBtn.disabled = true;
+  navbar.appendChild(nextBtn);
+}
+
+/* ---------------- validation ---------------- */
+
+function validateSection(section){
+  switch(section.type){
+    case "start": return state.name.trim().length>1 && state.relationship!=="";
+    case "info": return true;
+    case "agree": return state.agree==="yes";
+    case "signature": return state.signatureName.trim().length>1 && !!state.signatureData;
+    default: return true;
+  }
+}
+
+/* ---------------- section renderers ---------------- */
+
+var RENDERERS = {};
+
+RENDERERS.start = function(card){
+  card.appendChild(el("div",{class:"hero-mark"},["SR"]));
+  card.appendChild(el("h1",{class:"section-title"},["Contract of Sponsorship"]));
+  card.appendChild(el("p",{class:"section-intro"},[
+    "This sets out the responsibilities of Sedulous Rail Ltd, as your Primary Sponsor, and you, under the Sentinel Scheme operated on behalf of Network Rail. Takes about 5 minutes. You can leave and come back; your answers are kept on this device until you submit."
+  ]));
+
+  card.appendChild(el("div",{class:"note"},["Primary Sponsor: Sedulous Rail Ltd"]));
+
+  card.appendChild(el("label",{class:"field-label", for:"f-name"},["Full name"]));
+  card.appendChild(el("input",{type:"text", id:"f-name", value:state.name, placeholder:"e.g. Jordan Miles",
+    oninput:function(e){ state.name = e.target.value; renderNavOnly(); }}));
+
+  card.appendChild(el("label",{class:"field-label", for:"f-sentinel"},["Sentinel number (leave blank if not yet issued)"]));
+  card.appendChild(el("input",{type:"text", id:"f-sentinel", value:state.sentinelNumber, placeholder:"e.g. 1437171",
+    oninput:function(e){ state.sentinelNumber = e.target.value; }}));
+
+  card.appendChild(el("label",{class:"field-label"},["Contractual relationship"]));
+  var row = el("div",{class:"choice-row"});
+  ["Direct Employee","Self-employed","Subcontractor"].forEach(function(opt){
+    row.appendChild(el("button",{class:(state.relationship===opt?"sel":""), onclick:function(){ state.relationship=opt; render(); }},[opt]));
+  });
+  card.appendChild(row);
+
+  card.appendChild(el("label",{class:"field-label", for:"f-date", style:"margin-top:16px"},["Today's date"]));
+  card.appendChild(el("input",{type:"date", id:"f-date", value:state.date,
+    oninput:function(e){ state.date = e.target.value; }}));
+};
+
+function renderNavOnly(){
+  var section = SECTIONS[state.step];
+  renderNav(section);
+  saveDraft();
+}
+
+RENDERERS.info = function(card, section){
+  card.appendChild(el("h2",{class:"section-title"},[section.name]));
+  if(section.intro) card.appendChild(el("p",{class:"section-intro"},[section.intro]));
+  var ul = el("ul",{class:"acc-list"});
+  section.items.forEach(function(t){ ul.appendChild(el("li",{},[t])); });
+  card.appendChild(ul);
+};
+
+RENDERERS.agree = function(card, section){
+  card.appendChild(el("h2",{class:"section-title"},[section.name]));
+  if(section.intro) card.appendChild(el("p",{class:"section-intro"},[section.intro]));
+  var ul = el("ul",{class:"acc-list"});
+  section.items.forEach(function(t){ ul.appendChild(el("li",{},[t])); });
+  card.appendChild(ul);
+
+  var row = el("div",{class:"qrow"});
+  row.appendChild(el("div",{class:"qtext"},["I have read and understood my responsibilities as set out above, and agree to be bound by this Contract of Sponsorship."]));
+  var yn = el("div",{class:"yn"});
+  yn.appendChild(el("button",{class:"yes"+(state.agree==="yes"?" sel":""), onclick:function(){ state.agree="yes"; render(); }},["Yes, I agree"]));
+  yn.appendChild(el("button",{class:"no"+(state.agree==="no"?" sel":""), onclick:function(){ state.agree="no"; render(); }},["No"]));
+  row.appendChild(yn);
+  card.appendChild(row);
+  if(state.agree==="no"){
+    card.appendChild(el("div",{class:"note"},["You need to agree to this Contract of Sponsorship to continue. If you have questions, speak to your manager before signing."]));
+  }
+};
+
+var sigCtx=null, sigDrawing=false, sigHasStroke=false;
+
+RENDERERS.signature = function(card){
+  card.appendChild(el("h2",{class:"section-title"},["Sign & submit"]));
+  card.appendChild(el("p",{class:"section-intro"},[
+    "By signing below I confirm that the information provided in this Contract of Sponsorship is true and accurate to the best of my knowledge."
+  ]));
+
+  card.appendChild(el("label",{class:"field-label"},["Type your full name (this is your legal signature)"]));
+  card.appendChild(el("input",{type:"text", value:state.signatureName, placeholder:"Full name",
+    oninput:function(e){ state.signatureName = e.target.value; renderNavOnly(); }}));
+
+  card.appendChild(el("label",{class:"field-label"},["Sign with your finger below"]));
+  var wrap = el("div",{class:"sig-wrap"});
+  var canvas = el("canvas",{id:"sigpad"});
+  wrap.appendChild(canvas);
+  card.appendChild(wrap);
+  var actions = el("div",{class:"sig-actions"});
+  actions.appendChild(el("span",{style:"font-family:var(--font-mono);font-size:11px;color:var(--ink-muted)"},["Date: " + state.date]));
+  actions.appendChild(el("button",{onclick:function(){ clearSig(); }},["Clear"]));
+  card.appendChild(actions);
+
+  card.appendChild(el("div",{class:"note"},["This records your signature as the Sponsored Individual only. Sedulous Rail's Company Rail Representative countersigns separately once this is reviewed."]));
+
+  setTimeout(function(){ setupSignaturePad(canvas); }, 0);
+};
+
+function setupSignaturePad(canvas){
+  var dpr = window.devicePixelRatio || 1;
+  var rect = canvas.getBoundingClientRect();
+  canvas.width = rect.width * dpr;
+  canvas.height = rect.height * dpr;
+  sigCtx = canvas.getContext("2d");
+  sigCtx.scale(dpr, dpr);
+  sigCtx.lineWidth = 2.2;
+  sigCtx.lineCap = "round";
+  sigCtx.strokeStyle = getComputedStyle(document.documentElement).getPropertyValue("--ink").trim() || "#1a2420";
+  sigHasStroke = false;
+
+  if(state.signatureData){
+    var img = new Image();
+    img.onload = function(){ sigCtx.drawImage(img,0,0,rect.width,rect.height); };
+    img.src = state.signatureData;
+    sigHasStroke = true;
+  }
+
+  var last = null;
+  function pos(e){
+    var r = canvas.getBoundingClientRect();
+    var p = e.touches ? e.touches[0] : e;
+    return { x: p.clientX - r.left, y: p.clientY - r.top };
+  }
+  function start(e){ e.preventDefault(); sigDrawing = true; last = pos(e); }
+  function move(e){
+    if(!sigDrawing) return;
+    e.preventDefault();
+    var p = pos(e);
+    sigCtx.beginPath(); sigCtx.moveTo(last.x,last.y); sigCtx.lineTo(p.x,p.y); sigCtx.stroke();
+    last = p; sigHasStroke = true;
+  }
+  function end(){
+    if(!sigDrawing) return;
+    sigDrawing = false;
+    state.signatureData = canvas.toDataURL("image/png");
+    saveDraft();
+    renderNavOnly();
+  }
+  canvas.addEventListener("pointerdown", start);
+  canvas.addEventListener("pointermove", move);
+  window.addEventListener("pointerup", end);
+  canvas.addEventListener("touchstart", start, {passive:false});
+  canvas.addEventListener("touchmove", move, {passive:false});
+  canvas.addEventListener("touchend", end);
+}
+
+function clearSig(){
+  var canvas = document.getElementById("sigpad");
+  if(sigCtx && canvas){
+    var rect = canvas.getBoundingClientRect();
+    sigCtx.clearRect(0,0,rect.width,rect.height);
+  }
+  state.signatureData = null;
+  sigHasStroke = false;
+  renderNavOnly();
+}
+
+RENDERERS.done = function(card){
+  card.appendChild(el("div",{class:"hero-mark", style:"background:var(--go)"},["✓"]));
+  card.appendChild(el("h2",{class:"section-title"},["Contract submitted"]));
+  card.appendChild(el("p",{class:"section-intro"},[
+    "Thanks, " + (state.name||"") + " — your Contract of Sponsorship has been sent to Sedulous Rail. It's now pending countersignature by the Company Rail Representative before it's fully in effect. You don't need to do anything else."
+  ]));
+  card.appendChild(el("div",{class:"note"},["Keep this reference for your records:"]));
+  card.appendChild(el("div",{class:"done-ref"},[state.submissionId || ""]));
+};
+
+/* ---------------- submit ---------------- */
+
+function buildPayload(){
+  return {
+    name: state.name, sentinelNumber: state.sentinelNumber, relationship: state.relationship, date: state.date,
+    sponsorCommitments: SPONSOR_COMMITMENTS,
+    yourObligations: YOUR_OBLIGATIONS.map(function(text){ return {text:text}; }),
+    agreedToObligations: state.agree,
+    signatureName: state.signatureName, signatureDate: state.date, signaturePng: state.signatureData,
+    countersigned: false,
+    submittedAt: new Date().toISOString()
+  };
+}
+
+function submit(){
+  var section = SECTIONS[state.step];
+  if(!validateSection(section)) return;
+
+  var nextBtn = navbar.querySelector(".btn.primary");
+  if(nextBtn){ nextBtn.disabled = true; nextBtn.textContent = "Submitting…"; }
+
+  var payload = buildPayload();
+  fetch(SCRIPT_URL, {
+    method: "POST",
+    mode: "no-cors",
+    headers: { "Content-Type": "text/plain;charset=utf-8" },
+    body: JSON.stringify(payload)
+  }).then(function(){
+    finishSubmit();
+  }).catch(function(){
+    finishSubmit();
+  });
+}
+
+function finishSubmit(){
+  state.submitted = true;
+  state.submissionId = "SR-SP-" + Date.now().toString(36).toUpperCase();
+  clearDraft();
+  state.step = SECTIONS.length - 1;
+  render();
+}
+
+render();
+})();
+</script>
+</body>
+</html>

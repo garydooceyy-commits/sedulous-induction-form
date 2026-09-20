@@ -1,0 +1,615 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sedulous Rail — PPE Request</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Semi+Condensed:wght@500;600;700&family=Public+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#eef1ec; --panel:#ffffff; --panel-2:#f7f8f5;
+    --ink:#1a2420; --ink-muted:#54615a; --line:#c9d0c6; --line-strong:#a7b0a3;
+    --accent:#d45b12; --accent-ink:#ffffff; --accent-soft:#f6ded0;
+    --go:#2e6b3e; --go-soft:#dcece1; --stop:#b3261e; --stop-soft:#f6dcd9;
+    --shadow: 0 1px 2px rgba(20,26,20,.06), 0 6px 16px rgba(20,26,20,.06);
+    --radius: 14px;
+    --font-head: 'Barlow Semi Condensed', 'Arial Narrow', sans-serif;
+    --font-body: 'Public Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
+    --font-mono: 'IBM Plex Mono', ui-monospace, Menlo, monospace;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --paper:#12181a; --panel:#1b2225; --panel-2:#20282b;
+      --ink:#e8ece6; --ink-muted:#a7b1aa; --line:#333d39; --line-strong:#47524c;
+      --accent:#f0812f; --accent-ink:#1a1006; --accent-soft:#3a2515;
+      --go:#5cae6c; --go-soft:#1c3324; --stop:#e5695f; --stop-soft:#3a201d;
+      --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 20px rgba(0,0,0,.35);
+    }
+  }
+  :root[data-theme="dark"]{
+    --paper:#12181a; --panel:#1b2225; --panel-2:#20282b;
+    --ink:#e8ece6; --ink-muted:#a7b1aa; --line:#333d39; --line-strong:#47524c;
+    --accent:#f0812f; --accent-ink:#1a1006; --accent-soft:#3a2515;
+    --go:#5cae6c; --go-soft:#1c3324; --stop:#e5695f; --stop-soft:#3a201d;
+    --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 20px rgba(0,0,0,.35);
+  }
+
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{
+    background:var(--paper); color:var(--ink);
+    font-family:var(--font-body);
+    -webkit-font-smoothing:antialiased;
+    padding-inline:16px;
+    padding-block:0;
+    min-height:100vh;
+  }
+  h1,h2,h3{font-family:var(--font-head); font-weight:700; text-wrap:balance; margin:0}
+  .eyebrow{
+    font-family:var(--font-head); font-weight:600; letter-spacing:.09em; text-transform:uppercase;
+    font-size:12.5px; color:var(--ink-muted);
+  }
+  a{color:var(--accent)}
+
+  /* ---- Top identity bar ---- */
+  .topbar{
+    max-width:640px; margin:0 auto; padding-top:18px;
+    display:flex; align-items:baseline; justify-content:space-between; gap:12px;
+  }
+  .topbar .brand{font-family:var(--font-head); font-weight:700; font-size:19px; letter-spacing:.01em}
+  .topbar .doc-ref{font-family:var(--font-mono); font-size:11.5px; color:var(--ink-muted)}
+
+  /* ---- Sleeper-tick progress rail ---- */
+  .rail-wrap{max-width:640px; margin:14px auto 0; padding:0 2px}
+  .rail{display:flex; gap:4px; align-items:stretch; height:8px}
+  .tie{flex:1; border-radius:2px; background:var(--line); transition:background .25s ease}
+  .tie.done{background:var(--go)}
+  .tie.current{background:var(--accent)}
+  .rail-caption{display:flex; justify-content:space-between; margin-top:7px}
+  .rail-caption span{font-family:var(--font-mono); font-size:11px; color:var(--ink-muted)}
+
+  /* ---- Layout ---- */
+  main{max-width:640px; margin:0 auto; padding-bottom:120px}
+  .card{
+    background:var(--panel); border:1px solid var(--line); border-radius:var(--radius);
+    box-shadow:var(--shadow); padding:22px 20px; margin-top:18px;
+  }
+  .card + .card{margin-top:14px}
+  .section-title{font-size:23px; margin-top:6px}
+  .section-intro{color:var(--ink-muted); font-size:14.5px; line-height:1.55; margin-top:8px}
+  .note{
+    background:var(--panel-2); border:1px solid var(--line); border-radius:10px;
+    padding:12px 14px; font-size:13.5px; color:var(--ink-muted); line-height:1.5; margin-top:14px;
+  }
+
+  /* ---- Fields ---- */
+  label.field-label{display:block; font-family:var(--font-head); font-weight:600; font-size:14.5px; margin-bottom:6px}
+  input[type=text], input[type=date], input[type=number], select, textarea{
+    width:100%; font-family:var(--font-body); font-size:16px; color:var(--ink);
+    background:var(--panel-2); border:1px solid var(--line-strong); border-radius:10px;
+    padding:12px 13px; margin-bottom:16px;
+  }
+  input:focus, select:focus, textarea:focus, button:focus-visible{
+    outline:2px solid var(--accent); outline-offset:1px;
+  }
+  textarea{min-height:70px; resize:vertical}
+
+  /* ---- Yes/No question rows ---- */
+  .qrow{padding:16px 0; border-top:1px solid var(--line)}
+  .qrow:first-of-type{border-top:none; padding-top:6px}
+  .qrow .qtext{font-size:15.5px; line-height:1.5; margin-bottom:10px}
+  .qrow .qtitle{font-family:var(--font-head); font-weight:600; font-size:13.5px; color:var(--ink-muted); text-transform:uppercase; letter-spacing:.05em; margin-bottom:4px}
+  .yn{display:flex; gap:8px}
+  .yn button{
+    flex:1; padding:13px 0; font-family:var(--font-head); font-weight:700; font-size:15px;
+    letter-spacing:.03em; border-radius:10px; border:1.5px solid var(--line-strong);
+    background:var(--panel-2); color:var(--ink); cursor:pointer;
+  }
+  .yn button.yes.sel{background:var(--go-soft); border-color:var(--go); color:var(--go)}
+  .yn button.no.sel{background:var(--stop-soft); border-color:var(--stop); color:var(--stop)}
+  .choice-row{display:flex; gap:8px; margin-top:2px; flex-wrap:wrap}
+  .choice-row button{
+    flex:1 1 auto; padding:12px 8px; font-size:14.5px; border-radius:10px; border:1.5px solid var(--line-strong);
+    background:var(--panel-2); color:var(--ink); cursor:pointer; font-family:var(--font-body); font-weight:600;
+  }
+  .choice-row button.sel{background:var(--accent-soft); border-color:var(--accent); color:var(--accent)}
+  .conditional{margin-top:10px; padding-top:2px}
+  .conditional-grid{display:grid; grid-template-columns:1fr 1fr 1fr; gap:8px; margin-top:10px}
+  .conditional-grid input{margin-bottom:0}
+
+  .progress-count{font-family:var(--font-mono); font-size:12px; color:var(--ink-muted); margin-top:2px}
+
+  ul.acc-list{margin:12px 0 0; padding-left:20px; font-size:14.5px; line-height:1.6; color:var(--ink)}
+  ul.acc-list li{margin-bottom:6px}
+
+  /* ---- Signature ---- */
+  .sig-wrap{border:1.5px dashed var(--line-strong); border-radius:12px; background:var(--panel-2); overflow:hidden}
+  canvas#sigpad{width:100%; height:180px; touch-action:none; display:block}
+  .sig-actions{display:flex; justify-content:space-between; align-items:center; margin-top:8px}
+  .sig-actions button{
+    font-family:var(--font-head); font-weight:600; font-size:13px; letter-spacing:.03em;
+    background:none; border:none; color:var(--ink-muted); cursor:pointer; padding:6px 0;
+  }
+
+  /* ---- Bottom nav ---- */
+  .navbar{
+    position:fixed; left:0; right:0; bottom:0; background:var(--paper);
+    border-top:1px solid var(--line); padding:12px 16px calc(env(safe-area-inset-bottom) + 12px);
+  }
+  .navbar-inner{max-width:640px; margin:0 auto; display:flex; gap:10px}
+  .btn{
+    flex:1; font-family:var(--font-head); font-weight:700; font-size:16px; letter-spacing:.02em;
+    padding:15px 0; border-radius:11px; border:1.5px solid var(--line-strong); cursor:pointer;
+    background:var(--panel); color:var(--ink);
+  }
+  .btn.primary{background:var(--accent); border-color:var(--accent); color:var(--accent-ink)}
+  .btn.primary:disabled{opacity:.45; cursor:not-allowed}
+  .btn.ghost{flex:0 0 84px}
+
+  .flag{
+    display:inline-flex; align-items:center; gap:6px; font-family:var(--font-head); font-weight:600;
+    font-size:12.5px; letter-spacing:.03em; padding:4px 10px; border-radius:99px; margin-top:10px;
+  }
+  .flag.warn{background:var(--stop-soft); color:var(--stop)}
+
+  /* ---- Start / done screens ---- */
+  .hero-mark{
+    width:44px; height:44px; border-radius:10px; background:var(--accent); color:var(--accent-ink);
+    display:flex; align-items:center; justify-content:center; font-family:var(--font-head); font-weight:700; font-size:20px;
+    margin-bottom:14px;
+  }
+  .done-ref{font-family:var(--font-mono); font-size:14px; background:var(--panel-2); border:1px solid var(--line);
+    border-radius:8px; padding:10px 12px; margin-top:14px; word-break:break-all}
+
+  @media (max-width:420px){
+    .section-title{font-size:20px}
+    canvas#sigpad{height:160px}
+    .conditional-grid{grid-template-columns:1fr}
+  }
+</style>
+</head>
+<body>
+<div class="topbar">
+  <div class="brand">Sedulous Rail</div>
+  <div class="doc-ref">FORM 12 · ISSUE 1</div>
+</div>
+<div class="rail-wrap">
+  <div class="rail" id="rail"></div>
+  <div class="rail-caption"><span id="railLabel">SECTION 1 OF 10</span><span id="railName"></span></div>
+</div>
+<main id="app"></main>
+<div class="navbar">
+  <div class="navbar-inner" id="navbar"></div>
+</div>
+
+<script>
+(function(){
+"use strict";
+
+var SCRIPT_URL = "PASTE_PPE_APPS_SCRIPT_EXEC_URL_HERE";
+var DRAFT_KEY = "sedulous_ppe_draft_v1";
+
+/* ---------------- content data (transcribed from Form 12, Issue 1 — employee-facing half only) ---------------- */
+
+var PPE_CATEGORIES = [
+  { name:"Workwear", items:[
+    { key:"polo", text:"Polo Shirt" },
+    { key:"tshirt", text:"T-Shirt" },
+    { key:"cargoTrouser", text:"Blue Cargo Trouser" },
+    { key:"jumper", text:"Blue Jumper" },
+    { key:"fleece", text:"Blue Fleece" }
+  ]},
+  { name:"Hi-Vis", items:[
+    { key:"hivisVest", text:"Hi-Vis Vest — Rail Spec (RIS-3279-TOM)" },
+    { key:"hivisJacket", text:"Hi-Vis Bomber Jacket" },
+    { key:"hivisTrouser", text:"Hi-Vis Trouser" }
+  ]},
+  { name:"Footwear & Head Protection", items:[
+    { key:"boots", text:"Safety Boots (EN ISO 20345:2011 S3)" },
+    { key:"hardhat", text:"Hard Hat (EN 397)" },
+    { key:"bumpcap", text:"Bump Cap (EN 812:2012)" },
+    { key:"hardhatFaceShield", text:"Hard Hat (Face Shield)" }
+  ]},
+  { name:"Hearing & Eye Protection", items:[
+    { key:"earDefenders", text:"Ear Defenders (EN 352-1)" },
+    { key:"earDefendersHardHat", text:"Ear Defenders — Hard Hat Attachment (EN 352:2002)" },
+    { key:"glasses", text:"Safety Glasses (EN 166 1F)" },
+    { key:"glassesCase", text:"Safety Glasses Case" },
+    { key:"goggles", text:"Safety Goggles (EN 166 1B)" }
+  ]},
+  { name:"Other Protective Equipment", items:[
+    { key:"kneepads", text:"Knee Pads (EN 14404:2004+A1)" },
+    { key:"balaclava", text:"LUL Approved Balaclava" }
+  ]},
+  { name:"Respiratory", items:[
+    { key:"respirator", text:"Half Face Mask Respirator (EN 140:1998)" },
+    { key:"respiratorFilter", text:"Respirator Filter (EN 143:2006)" },
+    { key:"faceMask", text:"Disposable Face Masks (FFP2)" },
+    { key:"faceCovering", text:"Reusable Face Covering" }
+  ]},
+  { name:"Hand Protection", items:[
+    { key:"cutGloves", text:"Cut Resistant Gloves (Level 5)" },
+    { key:"nitrileGloves", text:"Nitrile Gloves" },
+    { key:"gauntletGloves", text:"Gauntlet Gloves" },
+    { key:"vinylGloves", text:"Disposable Vinyl Gloves (100 per box)" }
+  ]},
+  { name:"Hygiene & First Aid", items:[
+    { key:"sanitiser", text:"Hand Sanitiser (alcohol-based)" },
+    { key:"wipes", text:"Disinfectant Wipes (150 wipes per tub)" },
+    { key:"eyewash", text:"Eye Wash Station" },
+    { key:"firstaid", text:"First Aid Kit (10 Man)" },
+    { key:"spillkit", text:"Spill Kit (50L General Purpose)" }
+  ]}
+];
+
+var REASON_OPTIONS = ["New","Defective","Lost","Wear & tear","Other"];
+
+var PPE_DECLARATION = "I confirm the above is an accurate record of the PPE I am requesting, and that once issued I will use, maintain and store it as instructed. I understand I may not use PPE/RPE other than that issued by the company.";
+
+/* ---------------- section list ---------------- */
+
+var SECTIONS = [
+  { id:"start", name:"Your details", type:"start" }
+];
+PPE_CATEGORIES.forEach(function(cat, i){
+  SECTIONS.push({ id:"cat"+i, name:cat.name, type:"ppeitems", categoryIndex:i });
+});
+SECTIONS.push({ id:"declaration", name:"Declaration", type:"ppedeclaration" });
+SECTIONS.push({ id:"signature", name:"Sign & submit", type:"signature" });
+SECTIONS.push({ id:"done", name:"Submitted", type:"done" });
+
+/* ---------------- state ---------------- */
+
+var state = {
+  step: 0,
+  name:"", division:"", date: todayISO(),
+  reason: null, reasonOtherText:"",
+  ppe: {},
+  agree: null,
+  signatureName:"", signatureData:null,
+  submitted:false, submissionId:null
+};
+PPE_CATEGORIES.forEach(function(cat){
+  cat.items.forEach(function(item){
+    state.ppe[item.key] = { need:null, cbl:"", size:"", qty:"" };
+  });
+});
+loadDraft();
+
+function todayISO(){ var d=new Date(); return d.toISOString().slice(0,10); }
+
+function loadDraft(){
+  try{
+    var raw = localStorage.getItem(DRAFT_KEY);
+    if(raw){
+      var saved = JSON.parse(raw);
+      if(saved && !saved.submitted){
+        Object.assign(state, saved);
+        if(saved.ppe){ Object.assign(state.ppe, saved.ppe); }
+      }
+    }
+  }catch(e){}
+}
+function saveDraft(){
+  try{ localStorage.setItem(DRAFT_KEY, JSON.stringify(state)); }catch(e){}
+}
+function clearDraft(){
+  try{ localStorage.removeItem(DRAFT_KEY); }catch(e){}
+}
+
+/* ---------------- render ---------------- */
+
+var app = document.getElementById("app");
+var navbar = document.getElementById("navbar");
+
+function el(tag, attrs, children){
+  var e = document.createElement(tag);
+  attrs = attrs || {};
+  for(var k in attrs){
+    if(k==="class") e.className = attrs[k];
+    else if(k==="html") e.innerHTML = attrs[k];
+    else if(k.indexOf("on")===0) e.addEventListener(k.slice(2), attrs[k]);
+    else e.setAttribute(k, attrs[k]);
+  }
+  (children||[]).forEach(function(c){ if(c) e.appendChild(typeof c==="string"?document.createTextNode(c):c); });
+  return e;
+}
+
+function render(){
+  renderRail();
+  var section = SECTIONS[state.step];
+  app.innerHTML = "";
+  var card = el("div",{class:"card"});
+  app.appendChild(card);
+
+  RENDERERS[section.type](card, section);
+  renderNav(section);
+  saveDraft();
+}
+
+function renderRail(){
+  var rail = document.getElementById("rail");
+  rail.innerHTML = "";
+  SECTIONS.forEach(function(s, i){
+    if(s.type==="done") return;
+    var cls = "tie" + (i < state.step ? " done" : i===state.step ? " current" : "");
+    rail.appendChild(el("div",{class:cls}));
+  });
+  var total = SECTIONS.length - 1;
+  document.getElementById("railLabel").textContent = state.step < total
+    ? "SECTION " + (state.step+1) + " OF " + total
+    : "COMPLETE";
+  document.getElementById("railName").textContent = (SECTIONS[state.step].name||"").toUpperCase();
+}
+
+function renderNav(section){
+  navbar.innerHTML = "";
+  if(section.type==="done"){ return; }
+  var isFirst = state.step===0;
+  var isLastBeforeDone = SECTIONS[state.step+1] && SECTIONS[state.step+1].type==="done";
+
+  if(!isFirst){
+    navbar.appendChild(el("button",{class:"btn ghost", onclick:function(){ state.step--; render(); window.scrollTo(0,0); }},["Back"]));
+  }
+  var nextLabel = isLastBeforeDone ? "Review & sign" : "Next";
+  var canGo = validateSection(section);
+  var nextBtn = el("button",{class:"btn primary" + (canGo?"":""), onclick:function(){
+    if(!validateSection(section)) return;
+    if(section.type==="signature"){ submit(); return; }
+    state.step++; render(); window.scrollTo(0,0);
+  }},[nextLabel]);
+  if(!canGo) nextBtn.disabled = true;
+  navbar.appendChild(nextBtn);
+}
+
+/* ---------------- validation ---------------- */
+
+function validateSection(section){
+  switch(section.type){
+    case "start": return state.name.trim().length>1 && state.division.trim().length>0 && !!state.reason &&
+      (state.reason!=="Other" || state.reasonOtherText.trim().length>0);
+    case "ppeitems":
+      var cat = PPE_CATEGORIES[section.categoryIndex];
+      return cat.items.every(function(item){ return state.ppe[item.key].need==="yes" || state.ppe[item.key].need==="no"; });
+    case "ppedeclaration": return state.agree==="yes";
+    case "signature": return state.signatureName.trim().length>1 && !!state.signatureData;
+    default: return true;
+  }
+}
+
+/* ---------------- section renderers ---------------- */
+
+var RENDERERS = {};
+
+RENDERERS.start = function(card){
+  card.appendChild(el("div",{class:"hero-mark"},["SR"]));
+  card.appendChild(el("h1",{class:"section-title"},["PPE Request"]));
+  card.appendChild(el("p",{class:"section-intro"},[
+    "Tell us what PPE you need. Initial issue is free of charge; a pro-rata charge may apply for replacement only if it's proven the equipment was used for purposes other than work. This is a request — the office will confirm what's actually issued."
+  ]));
+
+  card.appendChild(el("label",{class:"field-label", for:"f-name"},["Full name"]));
+  card.appendChild(el("input",{type:"text", id:"f-name", value:state.name, placeholder:"e.g. Jordan Miles",
+    oninput:function(e){ state.name = e.target.value; renderNavOnly(); }}));
+
+  card.appendChild(el("label",{class:"field-label", for:"f-division"},["Division"]));
+  card.appendChild(el("input",{type:"text", id:"f-division", value:state.division, placeholder:"e.g. Rail Operations",
+    oninput:function(e){ state.division = e.target.value; renderNavOnly(); }}));
+
+  card.appendChild(el("label",{class:"field-label"},["Reason for request"]));
+  var row = el("div",{class:"choice-row"});
+  REASON_OPTIONS.forEach(function(opt){
+    row.appendChild(el("button",{class:(state.reason===opt?"sel":""), onclick:function(){ state.reason=opt; render(); }},[opt]));
+  });
+  card.appendChild(row);
+  if(state.reason==="Other"){
+    card.appendChild(el("div",{class:"conditional"},[el("input",{type:"text", placeholder:"Please state the reason", value:state.reasonOtherText,
+      oninput:function(e){ state.reasonOtherText = e.target.value; renderNavOnly(); }})]));
+  }
+
+  card.appendChild(el("label",{class:"field-label", for:"f-date", style:"margin-top:16px"},["Today's date"]));
+  card.appendChild(el("input",{type:"date", id:"f-date", value:state.date,
+    oninput:function(e){ state.date = e.target.value; }}));
+};
+
+function renderNavOnly(){
+  var section = SECTIONS[state.step];
+  renderNav(section);
+  saveDraft();
+}
+
+RENDERERS.ppeitems = function(card, section){
+  var cat = PPE_CATEGORIES[section.categoryIndex];
+  card.appendChild(el("h2",{class:"section-title"},[cat.name]));
+  card.appendChild(el("p",{class:"section-intro"},["Do you need any of the following?"]));
+
+  cat.items.forEach(function(item){
+    var rec = state.ppe[item.key];
+    var row = el("div",{class:"qrow"});
+    row.appendChild(el("div",{class:"qtext"},[item.text]));
+    var yn = el("div",{class:"yn"});
+    yn.appendChild(el("button",{class:"yes"+(rec.need==="yes"?" sel":""), onclick:function(){ rec.need="yes"; render(); }},["Yes"]));
+    yn.appendChild(el("button",{class:"no"+(rec.need==="no"?" sel":""), onclick:function(){ rec.need="no"; rec.cbl=""; rec.size=""; rec.qty=""; render(); }},["No"]));
+    row.appendChild(yn);
+    card.appendChild(row);
+    if(rec.need==="yes"){
+      var grid = el("div",{class:"conditional-grid"});
+      grid.appendChild(el("input",{type:"text", placeholder:"CB/L", value:rec.cbl, oninput:function(e){ rec.cbl=e.target.value; }}));
+      grid.appendChild(el("input",{type:"text", placeholder:"Size", value:rec.size, oninput:function(e){ rec.size=e.target.value; }}));
+      grid.appendChild(el("input",{type:"text", inputmode:"numeric", placeholder:"Qty", value:rec.qty, oninput:function(e){ rec.qty=e.target.value; }}));
+      card.appendChild(grid);
+    }
+  });
+
+  var answered = cat.items.filter(function(item){ return state.ppe[item.key].need; }).length;
+  card.appendChild(el("div",{class:"progress-count"},[answered + " of " + cat.items.length + " answered"]));
+};
+
+RENDERERS.ppedeclaration = function(card){
+  card.appendChild(el("h2",{class:"section-title"},["Declaration"]));
+  card.appendChild(el("p",{class:"section-intro"},[PPE_DECLARATION]));
+  var row = el("div",{class:"qrow"});
+  row.appendChild(el("div",{class:"qtext"},["Do you confirm the above?"]));
+  var yn = el("div",{class:"yn"});
+  yn.appendChild(el("button",{class:"yes"+(state.agree==="yes"?" sel":""), onclick:function(){ state.agree="yes"; render(); }},["Yes"]));
+  yn.appendChild(el("button",{class:"no"+(state.agree==="no"?" sel":""), onclick:function(){ state.agree="no"; render(); }},["No"]));
+  row.appendChild(yn);
+  card.appendChild(row);
+  if(state.agree==="no"){
+    card.appendChild(el("div",{class:"note"},["You need to confirm this to submit your request. If you have questions, speak to your manager first."]));
+  }
+};
+
+var sigCtx=null, sigDrawing=false, sigHasStroke=false;
+
+RENDERERS.signature = function(card){
+  card.appendChild(el("h2",{class:"section-title"},["Sign & submit"]));
+  card.appendChild(el("p",{class:"section-intro"},[
+    "By signing below I confirm that the information provided in this PPE request is true and accurate to the best of my knowledge."
+  ]));
+
+  card.appendChild(el("label",{class:"field-label"},["Type your full name (this is your legal signature)"]));
+  card.appendChild(el("input",{type:"text", value:state.signatureName, placeholder:"Full name",
+    oninput:function(e){ state.signatureName = e.target.value; renderNavOnly(); }}));
+
+  card.appendChild(el("label",{class:"field-label"},["Sign with your finger below"]));
+  var wrap = el("div",{class:"sig-wrap"});
+  var canvas = el("canvas",{id:"sigpad"});
+  wrap.appendChild(canvas);
+  card.appendChild(wrap);
+  var actions = el("div",{class:"sig-actions"});
+  actions.appendChild(el("span",{style:"font-family:var(--font-mono);font-size:11px;color:var(--ink-muted)"},["Date: " + state.date]));
+  actions.appendChild(el("button",{onclick:function(){ clearSig(); }},["Clear"]));
+  card.appendChild(actions);
+
+  setTimeout(function(){ setupSignaturePad(canvas); }, 0);
+};
+
+function setupSignaturePad(canvas){
+  var dpr = window.devicePixelRatio || 1;
+  var rect = canvas.getBoundingClientRect();
+  canvas.width = rect.width * dpr;
+  canvas.height = rect.height * dpr;
+  sigCtx = canvas.getContext("2d");
+  sigCtx.scale(dpr, dpr);
+  sigCtx.lineWidth = 2.2;
+  sigCtx.lineCap = "round";
+  sigCtx.strokeStyle = getComputedStyle(document.documentElement).getPropertyValue("--ink").trim() || "#1a2420";
+  sigHasStroke = false;
+
+  if(state.signatureData){
+    var img = new Image();
+    img.onload = function(){ sigCtx.drawImage(img,0,0,rect.width,rect.height); };
+    img.src = state.signatureData;
+    sigHasStroke = true;
+  }
+
+  var last = null;
+  function pos(e){
+    var r = canvas.getBoundingClientRect();
+    var p = e.touches ? e.touches[0] : e;
+    return { x: p.clientX - r.left, y: p.clientY - r.top };
+  }
+  function start(e){ e.preventDefault(); sigDrawing = true; last = pos(e); }
+  function move(e){
+    if(!sigDrawing) return;
+    e.preventDefault();
+    var p = pos(e);
+    sigCtx.beginPath(); sigCtx.moveTo(last.x,last.y); sigCtx.lineTo(p.x,p.y); sigCtx.stroke();
+    last = p; sigHasStroke = true;
+  }
+  function end(){
+    if(!sigDrawing) return;
+    sigDrawing = false;
+    state.signatureData = canvas.toDataURL("image/png");
+    saveDraft();
+    renderNavOnly();
+  }
+  canvas.addEventListener("pointerdown", start);
+  canvas.addEventListener("pointermove", move);
+  window.addEventListener("pointerup", end);
+  canvas.addEventListener("touchstart", start, {passive:false});
+  canvas.addEventListener("touchmove", move, {passive:false});
+  canvas.addEventListener("touchend", end);
+}
+
+function clearSig(){
+  var canvas = document.getElementById("sigpad");
+  if(sigCtx && canvas){
+    var rect = canvas.getBoundingClientRect();
+    sigCtx.clearRect(0,0,rect.width,rect.height);
+  }
+  state.signatureData = null;
+  sigHasStroke = false;
+  renderNavOnly();
+}
+
+RENDERERS.done = function(card){
+  card.appendChild(el("div",{class:"hero-mark", style:"background:var(--go)"},["✓"]));
+  card.appendChild(el("h2",{class:"section-title"},["Request submitted"]));
+  card.appendChild(el("p",{class:"section-intro"},[
+    "Thanks, " + (state.name||"") + " — your PPE request has been sent to Sedulous Rail. It'll be issued and confirmed by the office. You don't need to do anything else."
+  ]));
+  card.appendChild(el("div",{class:"note"},["Keep this reference for your records:"]));
+  card.appendChild(el("div",{class:"done-ref"},[state.submissionId || ""]));
+};
+
+/* ---------------- submit ---------------- */
+
+function buildPayload(){
+  var items = [];
+  PPE_CATEGORIES.forEach(function(cat){
+    cat.items.forEach(function(item){
+      var rec = state.ppe[item.key];
+      items.push({
+        category: cat.name, item: item.text, needed: rec.need,
+        cbl: rec.cbl, size: rec.size, qty: rec.qty
+      });
+    });
+  });
+  return {
+    name: state.name, division: state.division, date: state.date,
+    reason: state.reason, reasonOtherText: state.reasonOtherText,
+    items: items,
+    requestedCount: items.filter(function(i){ return i.needed==="yes"; }).length,
+    declarationAgreed: state.agree,
+    signatureName: state.signatureName, signatureDate: state.date, signaturePng: state.signatureData,
+    submittedAt: new Date().toISOString()
+  };
+}
+
+function submit(){
+  var section = SECTIONS[state.step];
+  if(!validateSection(section)) return;
+
+  var nextBtn = navbar.querySelector(".btn.primary");
+  if(nextBtn){ nextBtn.disabled = true; nextBtn.textContent = "Submitting…"; }
+
+  var payload = buildPayload();
+  fetch(SCRIPT_URL, {
+    method: "POST",
+    mode: "no-cors",
+    headers: { "Content-Type": "text/plain;charset=utf-8" },
+    body: JSON.stringify(payload)
+  }).then(function(){
+    finishSubmit();
+  }).catch(function(){
+    finishSubmit();
+  });
+}
+
+function finishSubmit(){
+  state.submitted = true;
+  state.submissionId = "SR-PPE-" + Date.now().toString(36).toUpperCase();
+  clearDraft();
+  state.step = SECTIONS.length - 1;
+  render();
+}
+
+render();
+})();
+</script>
+</body>
+</html>
