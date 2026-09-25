@@ -205,6 +205,7 @@ var DRAFT_KEY = "sedulous_personaldetails_draft_v1";
 var SECTIONS = [
   { id:"pin", name:"Access code", type:"pin" },
   { id:"personal", name:"Your details", type:"personal" },
+  { id:"work", name:"Work details", type:"work" },
   { id:"tax", name:"NI & UTR", type:"tax" },
   { id:"bank", name:"Bank details", type:"bank" },
   { id:"nok", name:"Next of kin", type:"nok" },
@@ -219,7 +220,8 @@ var state = {
   step: 0,
   pin:"",
   name:"", address:"", dob:"",
-  niNumber:"", utr:"",
+  mobile:"", email:"", trade:"", sentinelNo:"",
+  niNumber:"", utr:"", noUtr:false,
   bankAccountName:"", sortCode:"", accountNumber:"", rollNumber:"",
   nokName:"", nokRelationship:"", nokPhone:"",
   agree:null, date: todayISO(),
@@ -316,8 +318,10 @@ function renderNav(section){
 function validateSection(section){
   switch(section.type){
     case "pin": return /^[0-9]{4}$/.test(state.pin);
-    case "personal": return state.name.trim().length>1 && state.address.trim().length>3 && !!state.dob;
-    case "tax": return state.niNumber.trim().length>1 && state.utr.trim().length>1;
+    case "personal": return state.name.trim().length>1 && state.address.trim().length>3 && !!state.dob &&
+      state.mobile.replace(/[^0-9]/g,"").length>=10 && /^\S+@\S+\.\S+$/.test(state.email.trim());
+    case "work": return state.trade.trim().length>1;
+    case "tax": return state.niNumber.trim().length>1 && (state.noUtr || state.utr.trim().length>1);
     case "bank": return state.bankAccountName.trim().length>1 && state.sortCode.trim().length>1 && state.accountNumber.trim().length>1;
     case "nok": return state.nokName.trim().length>1 && state.nokRelationship.trim().length>1 && state.nokPhone.trim().length>1;
     case "declaration": return state.agree==="yes";
@@ -368,13 +372,31 @@ RENDERERS.personal = function(card){
   field(card, "Home address", "address", {placeholder:"Full address including postcode"});
   card.appendChild(el("label",{class:"field-label"},["Date of birth"]));
   card.appendChild(el("input",{type:"date", value:state.dob, oninput:function(e){ state.dob=e.target.value; renderNavOnly(); }}));
+  field(card, "Your mobile number", "mobile", {placeholder:"e.g. 07700 900123", type:"tel"});
+  field(card, "Your email address", "email", {placeholder:"e.g. name@example.com", inputmode:"email"});
+};
+
+RENDERERS.work = function(card){
+  card.appendChild(el("h2",{class:"section-title"},["Work details"]));
+  field(card, "Trade / role", "trade", {placeholder:"e.g. PTS Operative, Ganger"});
+  field(card, "Sentinel number (leave blank if you don't know it)", "sentinelNo", {placeholder:"e.g. 1437171", inputmode:"numeric"});
 };
 
 RENDERERS.tax = function(card){
   card.appendChild(el("h2",{class:"section-title"},["NI & UTR"]));
   card.appendChild(el("p",{class:"section-intro"},["Your National Insurance number and Unique Taxpayer Reference, exactly as they appear on your NI card/letter and HMRC UTR letter."]));
   field(card, "National Insurance number", "niNumber", {placeholder:"e.g. QQ123456C"});
-  field(card, "UTR (Unique Taxpayer Reference)", "utr", {placeholder:"10-digit number", inputmode:"numeric"});
+  if(!state.noUtr){
+    field(card, "UTR (Unique Taxpayer Reference)", "utr", {placeholder:"10-digit number", inputmode:"numeric"});
+  }
+  var utrRow = el("div",{class:"choice-row"});
+  utrRow.appendChild(el("button",{class:(state.noUtr?"sel":""), onclick:function(){
+    state.noUtr = !state.noUtr; if(state.noUtr) state.utr = ""; render();
+  }},[state.noUtr ? "I don't have a UTR yet (tap to undo)" : "I don't have a UTR yet"]));
+  card.appendChild(utrRow);
+  if(state.noUtr){
+    card.appendChild(el("div",{class:"note"},["No problem \u2014 you can still submit. We'll be in touch about getting your UTR sorted."]));
+  }
 };
 
 RENDERERS.bank = function(card){
@@ -511,7 +533,8 @@ function buildPayload(){
   return {
     pin: state.pin,
     name: state.name, address: state.address, dob: state.dob,
-    niNumber: state.niNumber, utr: state.utr,
+    mobile: state.mobile, email: state.email, trade: state.trade, sentinelNo: state.sentinelNo,
+    niNumber: state.niNumber, utr: state.utr, noUtr: state.noUtr,
     bankAccountName: state.bankAccountName, sortCode: state.sortCode,
     accountNumber: state.accountNumber, rollNumber: state.rollNumber,
     nokName: state.nokName, nokRelationship: state.nokRelationship, nokPhone: state.nokPhone,
