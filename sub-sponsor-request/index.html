@@ -1,0 +1,653 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Sedulous Rail — Sub-Sponsor Request</title>
+<meta name="description" content="Request to sub-sponsor a Sedulous Rail worker — shift details and agreement in one form, takes about 5 minutes.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Sedulous Rail — Sub-Sponsor Request">
+<meta property="og:description" content="Request to sub-sponsor a Sedulous Rail worker — shift details and agreement in one form, takes about 5 minutes.">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Sedulous Rail — Sub-Sponsor Request">
+<meta name="twitter:description" content="Request to sub-sponsor a Sedulous Rail worker — shift details and agreement in one form, takes about 5 minutes.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Semi+Condensed:wght@500;600;700&family=Public+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#eef1ec; --panel:#ffffff; --panel-2:#f7f8f5;
+    --ink:#1a2420; --ink-muted:#54615a; --line:#c9d0c6; --line-strong:#a7b0a3;
+    --accent:#d45b12; --accent-ink:#ffffff; --accent-soft:#f6ded0;
+    --go:#2e6b3e; --go-soft:#dcece1; --stop:#b3261e; --stop-soft:#f6dcd9;
+    --shadow: 0 1px 2px rgba(20,26,20,.06), 0 6px 16px rgba(20,26,20,.06);
+    --radius: 14px;
+    --font-head: 'Barlow Semi Condensed', 'Arial Narrow', sans-serif;
+    --font-body: 'Public Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
+    --font-mono: 'IBM Plex Mono', ui-monospace, Menlo, monospace;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --paper:#12181a; --panel:#1b2225; --panel-2:#20282b;
+      --ink:#e8ece6; --ink-muted:#a7b1aa; --line:#333d39; --line-strong:#47524c;
+      --accent:#f0812f; --accent-ink:#1a1006; --accent-soft:#3a2515;
+      --go:#5cae6c; --go-soft:#1c3324; --stop:#e5695f; --stop-soft:#3a201d;
+      --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 20px rgba(0,0,0,.35);
+    }
+  }
+  :root[data-theme="dark"]{
+    --paper:#12181a; --panel:#1b2225; --panel-2:#20282b;
+    --ink:#e8ece6; --ink-muted:#a7b1aa; --line:#333d39; --line-strong:#47524c;
+    --accent:#f0812f; --accent-ink:#1a1006; --accent-soft:#3a2515;
+    --go:#5cae6c; --go-soft:#1c3324; --stop:#e5695f; --stop-soft:#3a201d;
+    --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 20px rgba(0,0,0,.35);
+  }
+
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{
+    background:var(--paper); color:var(--ink);
+    font-family:var(--font-body);
+    -webkit-font-smoothing:antialiased;
+    padding-inline:16px;
+    padding-block:0;
+    min-height:100vh;
+  }
+  h1,h2,h3{font-family:var(--font-head); font-weight:700; text-wrap:balance; margin:0}
+  a{color:var(--accent)}
+
+  .topbar{
+    max-width:640px; margin:0 auto; padding-top:18px;
+    display:flex; align-items:baseline; justify-content:space-between; gap:12px;
+  }
+  .topbar .brand{font-family:var(--font-head); font-weight:700; font-size:19px; letter-spacing:.01em}
+  .topbar .doc-ref{font-family:var(--font-mono); font-size:11.5px; color:var(--ink-muted)}
+
+  .rail-wrap{max-width:640px; margin:14px auto 0; padding:0 2px}
+  .rail{display:flex; gap:4px; align-items:stretch; height:8px}
+  .tie{flex:1; border-radius:2px; background:var(--line); transition:background .25s ease}
+  .tie.done{background:var(--go)}
+  .tie.current{background:var(--accent)}
+  .rail-caption{display:flex; justify-content:space-between; margin-top:7px}
+  .rail-caption span{font-family:var(--font-mono); font-size:11px; color:var(--ink-muted)}
+
+  main{max-width:640px; margin:0 auto; padding-bottom:120px}
+  .card{
+    background:var(--panel); border:1px solid var(--line); border-radius:var(--radius);
+    box-shadow:var(--shadow); padding:22px 20px; margin-top:18px;
+  }
+  .card + .card{margin-top:14px}
+  .section-title{font-size:23px; margin-top:6px}
+  .section-intro{color:var(--ink-muted); font-size:14.5px; line-height:1.55; margin-top:8px}
+  .note{
+    background:var(--panel-2); border:1px solid var(--line); border-radius:10px;
+    padding:12px 14px; font-size:13.5px; color:var(--ink-muted); line-height:1.5; margin-top:14px;
+  }
+  .note.warn{background:var(--stop-soft); border-color:var(--stop); color:var(--stop)}
+
+  label.field-label{display:block; font-family:var(--font-head); font-weight:600; font-size:14.5px; margin-bottom:6px; margin-top:16px}
+  label.field-label:first-of-type{margin-top:0}
+  input[type=text], input[type=date], input[type=time], select, textarea{
+    width:100%; font-family:var(--font-body); font-size:16px; color:var(--ink);
+    background:var(--panel-2); border:1px solid var(--line-strong); border-radius:10px;
+    padding:12px 13px; margin-bottom:2px;
+  }
+  input:focus, select:focus, textarea:focus, button:focus-visible{
+    outline:2px solid var(--accent); outline-offset:1px;
+  }
+  textarea{min-height:70px; resize:vertical}
+  .field-hint{font-size:12.5px; color:var(--ink-muted); margin-top:4px; margin-bottom:10px}
+  .field-err{font-size:12.5px; color:var(--stop); margin-top:4px; margin-bottom:10px}
+
+  .qrow{padding:16px 0; border-top:1px solid var(--line)}
+  .qrow:first-of-type{border-top:none; padding-top:6px}
+  .qrow .qtext{font-size:15.5px; line-height:1.5; margin-bottom:10px}
+  .yn{display:flex; gap:8px}
+  .yn button{
+    flex:1; padding:13px 0; font-family:var(--font-head); font-weight:700; font-size:15px;
+    letter-spacing:.03em; border-radius:10px; border:1.5px solid var(--line-strong);
+    background:var(--panel-2); color:var(--ink); cursor:pointer;
+  }
+  .yn button.yes.sel{background:var(--go-soft); border-color:var(--go); color:var(--go)}
+  .yn button.no.sel{background:var(--stop-soft); border-color:var(--stop); color:var(--stop)}
+  .choice-row{display:flex; gap:8px; margin-top:2px; flex-wrap:wrap}
+  .choice-row button{
+    flex:1 1 auto; min-width:70px; padding:12px 8px; font-size:15px; border-radius:10px; border:1.5px solid var(--line-strong);
+    background:var(--panel-2); color:var(--ink); cursor:pointer; font-family:var(--font-body); font-weight:600;
+  }
+  .choice-row button.sel{background:var(--accent-soft); border-color:var(--accent); color:var(--accent)}
+
+  ul.acc-list{margin:12px 0 0; padding-left:20px; font-size:14.5px; line-height:1.6; color:var(--ink)}
+  ul.acc-list li{margin-bottom:6px}
+
+  /* ---- Shift cards ---- */
+  .shift-card{
+    border:1.5px solid var(--line-strong); border-radius:12px; padding:14px; margin-top:14px;
+    background:var(--panel-2); position:relative;
+  }
+  .shift-card .shift-title{font-family:var(--font-head); font-weight:700; font-size:13.5px; letter-spacing:.04em; text-transform:uppercase; color:var(--ink-muted); margin-bottom:10px}
+  .shift-grid{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+  .shift-grid .full{grid-column:1 / -1}
+  .shift-remove{
+    margin-top:4px; background:none; border:none; color:var(--stop); font-family:var(--font-head);
+    font-weight:600; font-size:13px; cursor:pointer; padding:4px 0;
+  }
+  .add-shift{
+    margin-top:14px; width:100%; padding:13px 0; font-family:var(--font-head); font-weight:700; font-size:15px;
+    border-radius:10px; border:1.5px dashed var(--line-strong); background:var(--panel); color:var(--accent); cursor:pointer;
+  }
+
+  .sig-wrap{border:1.5px dashed var(--line-strong); border-radius:12px; background:var(--panel-2); overflow:hidden}
+  canvas#sigpad{width:100%; height:180px; touch-action:none; display:block}
+  .sig-actions{display:flex; justify-content:space-between; align-items:center; margin-top:8px}
+  .sig-actions button{
+    font-family:var(--font-head); font-weight:600; font-size:13px; letter-spacing:.03em;
+    background:none; border:none; color:var(--ink-muted); cursor:pointer; padding:6px 0;
+  }
+
+  .navbar{
+    position:fixed; left:0; right:0; bottom:0; background:var(--paper);
+    border-top:1px solid var(--line); padding:12px 16px calc(env(safe-area-inset-bottom) + 12px);
+  }
+  .navbar-inner{max-width:640px; margin:0 auto; display:flex; gap:10px}
+  .btn{
+    flex:1; font-family:var(--font-head); font-weight:700; font-size:16px; letter-spacing:.02em;
+    padding:15px 0; border-radius:11px; border:1.5px solid var(--line-strong); cursor:pointer;
+    background:var(--panel); color:var(--ink);
+  }
+  .btn.primary{background:var(--accent); border-color:var(--accent); color:var(--accent-ink)}
+  .btn.primary:disabled{opacity:.45; cursor:not-allowed}
+  .btn.ghost{flex:0 0 84px}
+
+  .hero-mark{
+    width:44px; height:44px; border-radius:10px; background:var(--accent); color:var(--accent-ink);
+    display:flex; align-items:center; justify-content:center; font-family:var(--font-head); font-weight:700; font-size:20px;
+    margin-bottom:14px;
+  }
+  .done-ref{font-family:var(--font-mono); font-size:14px; background:var(--panel-2); border:1px solid var(--line);
+    border-radius:8px; padding:10px 12px; margin-top:14px; word-break:break-all}
+
+  @media (max-width:420px){
+    .section-title{font-size:20px}
+    canvas#sigpad{height:160px}
+    .shift-grid{grid-template-columns:1fr}
+  }
+</style>
+</head>
+<body>
+<div class="topbar">
+  <div class="brand">Sedulous Rail</div>
+  <div class="doc-ref">FORM 19/20 · COMBINED</div>
+</div>
+<div class="rail-wrap">
+  <div class="rail" id="rail"></div>
+  <div class="rail-caption"><span id="railLabel">SECTION 1 OF 10</span><span id="railName"></span></div>
+</div>
+<main id="app"></main>
+<div class="navbar">
+  <div class="navbar-inner" id="navbar"></div>
+</div>
+
+<script>
+(function(){
+"use strict";
+
+var SCRIPT_URL = "PASTE_YOUR_DEPLOYMENT_URL_HERE";
+var DRAFT_KEY = "sedulous_subsponsor_draft_v1";
+
+/* ---------------- content data (transcribed from Form 19 + Form 20, Issue 1) ---------------- */
+
+var PRIMARY_RESPONSIBILITIES = [
+  "Ensure that the worker is managed in accordance with the Sentinel Scheme Rules.",
+  "Undertake checks of each individual's suitability to work on Network Rail Managed Infrastructure prior to entering into primary sponsorship.",
+  "Ensure that they are issued with the appropriate rule books, handbooks, PPE and other personal equipment required to carry out their role on Network Rail Managed Infrastructure.",
+  "Ensure that their competence is maintained as required.",
+  "Monitor and manage working hours in accordance with Network Rail standards.",
+  "Arrange for medical surveillance and drug and alcohol screening to be carried out in accordance with Network Rail Standards.",
+  "Respond to Sentinel requests for sub-sponsorship as soon as reasonably practicable, via the Sentinel website.",
+  "Where the request is denied we will provide you with a reason for this via the Sentinel website.",
+  "Provide details of restrictions on workers hours for the purposes of fatigue and working hours management.",
+  "Provide 5 working days' notice if we intend to de-sponsor an individual to allow you to take up primary sponsorship of that individual."
+];
+
+var SUB_SPONSOR_RESPONSIBILITIES = [
+  "Request permission, in writing, to use an individual via Sentinel at least 1 working day prior to the commencement of the shift and only use them once confirmation is received from us.",
+  "Provide the duty to be completed (PTS/COSS/Lookout etc.), date(s) and start/finish times proposed, and location of work for each individual — captured in the shift details below.",
+  "Provide a copy of the risk assessment where any excess working hours have been approved.",
+  "Notify us of any safety incidents as soon as is reasonably practicable and provide information to enable a local investigation to be carried out.",
+  "Notify us of any breach of the Sentinel scheme rules as soon as is reasonably practicable and provide information to enable a local investigation to be carried out.",
+  "Provide PPE as required including hi-visibility vest/jacket bearing the name of the sponsor responsible for putting the individual to work.",
+  "Ensure suitable equipment is provided, which is required by the individual, to carry out their tasks whilst working on your behalf, for example COSS/Lookout equipment, devices to read Sentinel cards where necessary etc.",
+  "Accept full responsibility for arranging for the individual to attend the shifts you have requested them for, and that there will be no re-course to us as the Primary Sponsor in the event that the individual does not attend site.",
+  "Comply with Network Rail competence management requirements.",
+  "Comply with all legal requirements including Right to Work legislation, the Agency Workers Legislation, Working Time Regulations, Health & Safety at Work etc. Act.",
+  "Hold adequate, valid Employers and Public Liability insurances."
+];
+
+var DUTY_OPTIONS = ["PTS","COSS","Lookout","Other"];
+
+/* ---------------- section list ---------------- */
+
+var SECTIONS = [
+  { id:"start", name:"Your details", type:"start" },
+  { id:"candidate", name:"Candidate", type:"candidate" },
+  { id:"shift", name:"Site & shift details", type:"shift" },
+  { id:"commitments", name:"What we commit to", type:"info", items:PRIMARY_RESPONSIBILITIES,
+    intro:"As your Primary Sponsor, Sedulous Rail Ltd commits to the following under the Sentinel Scheme." },
+  { id:"obligations", name:"Your responsibilities", type:"agree", items:SUB_SPONSOR_RESPONSIBILITIES,
+    intro:"As sub-sponsor of this Sentinel cardholder, you agree to the following." },
+  { id:"signature", name:"Sign & submit", type:"signature" },
+  { id:"done", name:"Submitted", type:"done" }
+];
+
+/* ---------------- state ---------------- */
+
+var state = {
+  step: 0,
+  subSponsorCompany:"", requesterName:"", requesterPosition:"", date: todayISO(),
+  candidateName:"", sentinelNumber:"",
+  siteName:"", sitePostcode:"", dutyType:"", dutyOther:"", natureOfWorks:"",
+  shifts: [ { date:"", start:"", finish:"" } ],
+  agree: null,
+  signatureName:"", signaturePosition:"", signatureData:null,
+  submitted:false, submissionId:null
+};
+loadDraft();
+
+function todayISO(){ var d=new Date(); return d.toISOString().slice(0,10); }
+
+function loadDraft(){
+  try{
+    var raw = localStorage.getItem(DRAFT_KEY);
+    if(raw){
+      var saved = JSON.parse(raw);
+      if(saved && !saved.submitted){ Object.assign(state, saved); }
+    }
+  }catch(e){}
+}
+function saveDraft(){
+  try{ localStorage.setItem(DRAFT_KEY, JSON.stringify(state)); }catch(e){}
+}
+function clearDraft(){
+  try{ localStorage.removeItem(DRAFT_KEY); }catch(e){}
+}
+
+/* ---------------- render ---------------- */
+
+var app = document.getElementById("app");
+var navbar = document.getElementById("navbar");
+
+function el(tag, attrs, children){
+  var e = document.createElement(tag);
+  attrs = attrs || {};
+  for(var k in attrs){
+    if(k==="class") e.className = attrs[k];
+    else if(k==="html") e.innerHTML = attrs[k];
+    else if(k.indexOf("on")===0) e.addEventListener(k.slice(2), attrs[k]);
+    else e.setAttribute(k, attrs[k]);
+  }
+  (children||[]).forEach(function(c){ if(c) e.appendChild(typeof c==="string"?document.createTextNode(c):c); });
+  return e;
+}
+
+function render(){
+  renderRail();
+  var section = SECTIONS[state.step];
+  app.innerHTML = "";
+  var card = el("div",{class:"card"});
+  app.appendChild(card);
+
+  RENDERERS[section.type](card, section);
+  renderNav(section);
+  saveDraft();
+}
+
+function renderRail(){
+  var rail = document.getElementById("rail");
+  rail.innerHTML = "";
+  SECTIONS.forEach(function(s, i){
+    if(s.type==="done") return;
+    var cls = "tie" + (i < state.step ? " done" : i===state.step ? " current" : "");
+    rail.appendChild(el("div",{class:cls}));
+  });
+  var total = SECTIONS.length - 1;
+  document.getElementById("railLabel").textContent = state.step < total
+    ? "SECTION " + (state.step+1) + " OF " + total
+    : "COMPLETE";
+  document.getElementById("railName").textContent = (SECTIONS[state.step].name||"").toUpperCase();
+}
+
+function renderNav(section){
+  navbar.innerHTML = "";
+  if(section.type==="done"){ return; }
+  var isFirst = state.step===0;
+  var isLastBeforeDone = SECTIONS[state.step+1] && SECTIONS[state.step+1].type==="done";
+
+  if(!isFirst){
+    navbar.appendChild(el("button",{class:"btn ghost", onclick:function(){ state.step--; render(); window.scrollTo(0,0); }},["Back"]));
+  }
+  var nextLabel = isLastBeforeDone ? "Review & sign" : "Next";
+  var canGo = validateSection(section);
+  var nextBtn = el("button",{class:"btn primary", onclick:function(){
+    if(!validateSection(section)) return;
+    if(section.type==="signature"){ submit(); return; }
+    state.step++; render(); window.scrollTo(0,0);
+  }},[nextLabel]);
+  if(!canGo) nextBtn.disabled = true;
+  navbar.appendChild(nextBtn);
+}
+
+/* ---------------- validation ---------------- */
+
+var UK_POSTCODE_RE = /^[A-Z]{1,2}\d[A-Z\d]?\s*\d[A-Z]{2}$/i;
+
+function validShifts(){
+  return state.shifts.some(function(s){ return s.date && s.start && s.finish; });
+}
+
+function validateSection(section){
+  switch(section.type){
+    case "start":
+      return state.subSponsorCompany.trim().length>1 && state.requesterName.trim().length>1 && state.requesterPosition.trim().length>1;
+    case "candidate":
+      return state.candidateName.trim().length>1 && state.sentinelNumber.trim().length>3;
+    case "shift":
+      return state.siteName.trim().length>1 && UK_POSTCODE_RE.test(state.sitePostcode.trim())
+        && state.dutyType!=="" && (state.dutyType!=="Other" || state.dutyOther.trim().length>0)
+        && validShifts();
+    case "info": return true;
+    case "agree": return state.agree==="yes";
+    case "signature": return state.signatureName.trim().length>1 && state.signaturePosition.trim().length>1 && !!state.signatureData;
+    default: return true;
+  }
+}
+
+/* ---------------- section renderers ---------------- */
+
+var RENDERERS = {};
+
+RENDERERS.start = function(card){
+  card.appendChild(el("div",{class:"hero-mark"},["SR"]));
+  card.appendChild(el("h1",{class:"section-title"},["Sub-Sponsor Request"]));
+  card.appendChild(el("p",{class:"section-intro"},[
+    "Request to sub-sponsor one of Sedulous Rail Ltd's Sentinel-sponsored workers for a shift — combines the old Form 19 (working hours) and Form 20 (agreement) into one. Takes about 5 minutes. You can leave and come back; your answers are kept on this device until you submit."
+  ]));
+
+  card.appendChild(el("div",{class:"note"},["Primary Sponsor: Sedulous Rail Ltd"]));
+
+  card.appendChild(el("label",{class:"field-label", for:"f-company"},["Your company (the sub-sponsor)"]));
+  card.appendChild(el("input",{type:"text", id:"f-company", value:state.subSponsorCompany, placeholder:"e.g. Sunville Rail Ltd",
+    oninput:function(e){ state.subSponsorCompany = e.target.value; renderNavOnly(); }}));
+
+  card.appendChild(el("label",{class:"field-label", for:"f-reqname"},["Your name"]));
+  card.appendChild(el("input",{type:"text", id:"f-reqname", value:state.requesterName, placeholder:"e.g. Jamie Hayes",
+    oninput:function(e){ state.requesterName = e.target.value; renderNavOnly(); }}));
+
+  card.appendChild(el("label",{class:"field-label", for:"f-reqpos"},["Your position"]));
+  card.appendChild(el("input",{type:"text", id:"f-reqpos", value:state.requesterPosition, placeholder:"e.g. Business Support Administrator",
+    oninput:function(e){ state.requesterPosition = e.target.value; renderNavOnly(); }}));
+
+  card.appendChild(el("label",{class:"field-label", for:"f-date"},["Today's date"]));
+  card.appendChild(el("input",{type:"date", id:"f-date", value:state.date,
+    oninput:function(e){ state.date = e.target.value; }}));
+};
+
+RENDERERS.candidate = function(card){
+  card.appendChild(el("h2",{class:"section-title"},["Candidate"]));
+  card.appendChild(el("p",{class:"section-intro"},["The Sedulous Rail worker you want to sub-sponsor for this shift."]));
+
+  card.appendChild(el("label",{class:"field-label", for:"f-candname"},["Candidate full name"]));
+  card.appendChild(el("input",{type:"text", id:"f-candname", value:state.candidateName, placeholder:"e.g. Leo Lansdowne",
+    oninput:function(e){ state.candidateName = e.target.value; renderNavOnly(); }}));
+
+  card.appendChild(el("label",{class:"field-label", for:"f-sentinel"},["Sentinel number"]));
+  card.appendChild(el("input",{type:"text", id:"f-sentinel", value:state.sentinelNumber, placeholder:"e.g. 1458669",
+    oninput:function(e){ state.sentinelNumber = e.target.value; renderNavOnly(); }}));
+  card.appendChild(el("div",{class:"field-hint"},["Found on their Sentinel smart card."]));
+};
+
+RENDERERS.shift = function(card){
+  card.appendChild(el("h2",{class:"section-title"},["Site & shift details"]));
+  card.appendChild(el("p",{class:"section-intro"},["Where and when the individual will be working for you."]));
+
+  card.appendChild(el("label",{class:"field-label", for:"f-site"},["Site name"]));
+  card.appendChild(el("input",{type:"text", id:"f-site", value:state.siteName, placeholder:"e.g. Gillingham Station",
+    oninput:function(e){ state.siteName = e.target.value; renderNavOnly(); }}));
+
+  card.appendChild(el("label",{class:"field-label", for:"f-postcode"},["Site postcode"]));
+  card.appendChild(el("input",{type:"text", id:"f-postcode", value:state.sitePostcode, placeholder:"e.g. ME7 1UH",
+    oninput:function(e){ state.sitePostcode = e.target.value.toUpperCase(); renderNavOnly(); }}));
+  if(state.sitePostcode && !UK_POSTCODE_RE.test(state.sitePostcode.trim())){
+    card.appendChild(el("div",{class:"field-err"},["Doesn't look like a valid UK postcode yet."]));
+  }else{
+    card.appendChild(el("div",{class:"field-hint"},["Required — this is what lets us work out travel time automatically."]));
+  }
+
+  card.appendChild(el("label",{class:"field-label"},["Duty to be completed"]));
+  var row = el("div",{class:"choice-row"});
+  DUTY_OPTIONS.forEach(function(opt){
+    row.appendChild(el("button",{class:(state.dutyType===opt?"sel":""), onclick:function(){ state.dutyType=opt; render(); }},[opt]));
+  });
+  card.appendChild(row);
+  if(state.dutyType==="Other"){
+    card.appendChild(el("input",{type:"text", style:"margin-top:10px", value:state.dutyOther, placeholder:"Describe the duty",
+      oninput:function(e){ state.dutyOther = e.target.value; renderNavOnly(); }}));
+  }
+
+  card.appendChild(el("label",{class:"field-label", for:"f-nature"},["Nature / planned works"]));
+  card.appendChild(el("textarea",{id:"f-nature", placeholder:"e.g. Trackside civils, cable pulling",
+    oninput:function(e){ state.natureOfWorks = e.target.value; }},[state.natureOfWorks]));
+
+  card.appendChild(el("label",{class:"field-label", style:"margin-top:22px"},["Shift(s)"]));
+  state.shifts.forEach(function(shift, i){
+    var sc = el("div",{class:"shift-card"});
+    sc.appendChild(el("div",{class:"shift-title"},["Shift " + (i+1)]));
+    var grid = el("div",{class:"shift-grid"});
+    grid.appendChild(el("input",{type:"date", class:"full", value:shift.date,
+      oninput:function(e){ shift.date = e.target.value; renderNavOnly(); }}));
+    grid.appendChild(el("input",{type:"time", value:shift.start, placeholder:"Start",
+      oninput:function(e){ shift.start = e.target.value; renderNavOnly(); }}));
+    grid.appendChild(el("input",{type:"time", value:shift.finish, placeholder:"Finish",
+      oninput:function(e){ shift.finish = e.target.value; renderNavOnly(); }}));
+    sc.appendChild(grid);
+    if(state.shifts.length>1){
+      sc.appendChild(el("button",{class:"shift-remove", onclick:function(){ state.shifts.splice(i,1); render(); }},["Remove this shift"]));
+    }
+    card.appendChild(sc);
+  });
+  card.appendChild(el("button",{class:"add-shift", onclick:function(){ state.shifts.push({date:"",start:"",finish:""}); render(); }},["+ Add another shift"]));
+  card.appendChild(el("div",{class:"field-hint", style:"margin-top:10px"},["No need to work out travel time yourself — Sedulous calculates it from the site postcode and shift start time."]));
+};
+
+RENDERERS.info = function(card, section){
+  card.appendChild(el("h2",{class:"section-title"},[section.name]));
+  if(section.intro) card.appendChild(el("p",{class:"section-intro"},[section.intro]));
+  var ul = el("ul",{class:"acc-list"});
+  section.items.forEach(function(t){ ul.appendChild(el("li",{},[t])); });
+  card.appendChild(ul);
+};
+
+RENDERERS.agree = function(card, section){
+  card.appendChild(el("h2",{class:"section-title"},[section.name]));
+  if(section.intro) card.appendChild(el("p",{class:"section-intro"},[section.intro]));
+  var ul = el("ul",{class:"acc-list"});
+  section.items.forEach(function(t){ ul.appendChild(el("li",{},[t])); });
+  card.appendChild(ul);
+
+  card.appendChild(el("div",{class:"note warn"},[
+    "If any of the following happen while the individual is working for you, you must inform Sedulous Rail immediately: exceedance of working hours (request an Excess Working Hours Form and send a copy of the risk assessment); or any accident, incident, close call or near miss (request an accident/incident report form)."
+  ]));
+
+  var row = el("div",{class:"qrow"});
+  row.appendChild(el("div",{class:"qtext"},["I have read and understood our responsibilities as sub-sponsor as set out above, and agree to be bound by this Sub-Sponsorship Agreement."]));
+  var yn = el("div",{class:"yn"});
+  yn.appendChild(el("button",{class:"yes"+(state.agree==="yes"?" sel":""), onclick:function(){ state.agree="yes"; render(); }},["Yes, I agree"]));
+  yn.appendChild(el("button",{class:"no"+(state.agree==="no"?" sel":""), onclick:function(){ state.agree="no"; render(); }},["No"]));
+  row.appendChild(yn);
+  card.appendChild(row);
+  if(state.agree==="no"){
+    card.appendChild(el("div",{class:"note"},["You need to agree to this Sub-Sponsorship Agreement to continue."]));
+  }
+};
+
+var sigCtx=null, sigDrawing=false;
+
+RENDERERS.signature = function(card){
+  card.appendChild(el("h2",{class:"section-title"},["Sign & submit"]));
+  card.appendChild(el("p",{class:"section-intro"},[
+    "By signing below I confirm that the information provided in this Sub-Sponsor Request is true and accurate to the best of my knowledge, and is given on behalf of " + (state.subSponsorCompany || "the sub-sponsor company") + "."
+  ]));
+
+  card.appendChild(el("label",{class:"field-label"},["Type your full name (this is your legal signature)"]));
+  card.appendChild(el("input",{type:"text", value:state.signatureName, placeholder:"Full name",
+    oninput:function(e){ state.signatureName = e.target.value; renderNavOnly(); }}));
+
+  card.appendChild(el("label",{class:"field-label"},["Your position"]));
+  card.appendChild(el("input",{type:"text", value:state.signaturePosition, placeholder:"e.g. Business Support Administrator",
+    oninput:function(e){ state.signaturePosition = e.target.value; renderNavOnly(); }}));
+
+  card.appendChild(el("label",{class:"field-label"},["Sign with your finger below"]));
+  var wrap = el("div",{class:"sig-wrap"});
+  var canvas = el("canvas",{id:"sigpad"});
+  wrap.appendChild(canvas);
+  card.appendChild(wrap);
+  var actions = el("div",{class:"sig-actions"});
+  actions.appendChild(el("span",{style:"font-family:var(--font-mono);font-size:11px;color:var(--ink-muted)"},["Date: " + state.date]));
+  actions.appendChild(el("button",{onclick:function(){ clearSig(); }},["Clear"]));
+  card.appendChild(actions);
+
+  setTimeout(function(){ setupSignaturePad(canvas); }, 0);
+};
+
+function setupSignaturePad(canvas){
+  var dpr = window.devicePixelRatio || 1;
+  var rect = canvas.getBoundingClientRect();
+  canvas.width = rect.width * dpr;
+  canvas.height = rect.height * dpr;
+  sigCtx = canvas.getContext("2d");
+  sigCtx.scale(dpr, dpr);
+  sigCtx.lineWidth = 2.2;
+  sigCtx.lineCap = "round";
+  sigCtx.strokeStyle = getComputedStyle(document.documentElement).getPropertyValue("--ink").trim() || "#1a2420";
+
+  if(state.signatureData){
+    var img = new Image();
+    img.onload = function(){ sigCtx.drawImage(img,0,0,rect.width,rect.height); };
+    img.src = state.signatureData;
+  }
+
+  var last = null;
+  function pos(e){
+    var r = canvas.getBoundingClientRect();
+    var p = e.touches ? e.touches[0] : e;
+    return { x: p.clientX - r.left, y: p.clientY - r.top };
+  }
+  function start(e){ e.preventDefault(); sigDrawing = true; last = pos(e); }
+  function move(e){
+    if(!sigDrawing) return;
+    e.preventDefault();
+    var p = pos(e);
+    sigCtx.beginPath(); sigCtx.moveTo(last.x,last.y); sigCtx.lineTo(p.x,p.y); sigCtx.stroke();
+    last = p;
+  }
+  function end(){
+    if(!sigDrawing) return;
+    sigDrawing = false;
+    state.signatureData = canvas.toDataURL("image/png");
+    saveDraft();
+    renderNavOnly();
+  }
+  canvas.addEventListener("pointerdown", start);
+  canvas.addEventListener("pointermove", move);
+  window.addEventListener("pointerup", end);
+  canvas.addEventListener("touchstart", start, {passive:false});
+  canvas.addEventListener("touchmove", move, {passive:false});
+  canvas.addEventListener("touchend", end);
+}
+
+function clearSig(){
+  var canvas = document.getElementById("sigpad");
+  if(sigCtx && canvas){
+    var rect = canvas.getBoundingClientRect();
+    sigCtx.clearRect(0,0,rect.width,rect.height);
+  }
+  state.signatureData = null;
+  renderNavOnly();
+}
+
+RENDERERS.done = function(card){
+  card.appendChild(el("div",{class:"hero-mark", style:"background:var(--go)"},["✓"]));
+  card.appendChild(el("h2",{class:"section-title"},["Request submitted"]));
+  card.appendChild(el("p",{class:"section-intro"},[
+    "Thanks — your sub-sponsor request for " + (state.candidateName||"this worker") + " has been sent to Sedulous Rail. We'll confirm via Sentinel once it's been reviewed. You don't need to do anything else."
+  ]));
+  card.appendChild(el("div",{class:"note"},["Keep this reference for your records:"]));
+  card.appendChild(el("div",{class:"done-ref"},[state.submissionId || ""]));
+};
+
+function renderNavOnly(){
+  var section = SECTIONS[state.step];
+  renderNav(section);
+  saveDraft();
+}
+
+/* ---------------- submit ---------------- */
+
+function buildPayload(){
+  return {
+    subSponsorCompany: state.subSponsorCompany,
+    requesterName: state.requesterName,
+    requesterPosition: state.requesterPosition,
+    requestDate: state.date,
+    candidateName: state.candidateName,
+    sentinelNumber: state.sentinelNumber,
+    siteName: state.siteName,
+    sitePostcode: state.sitePostcode,
+    dutyType: state.dutyType==="Other" ? state.dutyOther : state.dutyType,
+    natureOfWorks: state.natureOfWorks,
+    shifts: state.shifts.filter(function(s){ return s.date && s.start && s.finish; }),
+    primaryResponsibilities: PRIMARY_RESPONSIBILITIES,
+    subSponsorResponsibilities: SUB_SPONSOR_RESPONSIBILITIES.map(function(text){ return {text:text}; }),
+    agreedToResponsibilities: state.agree,
+    signatureName: state.signatureName,
+    signaturePosition: state.signaturePosition,
+    signatureDate: state.date,
+    signaturePng: state.signatureData,
+    submittedAt: new Date().toISOString()
+  };
+}
+
+function submit(){
+  var section = SECTIONS[state.step];
+  if(!validateSection(section)) return;
+
+  var nextBtn = navbar.querySelector(".btn.primary");
+  if(nextBtn){ nextBtn.disabled = true; nextBtn.textContent = "Submitting…"; }
+
+  var payload = buildPayload();
+  fetch(SCRIPT_URL, {
+    method: "POST",
+    mode: "no-cors",
+    headers: { "Content-Type": "text/plain;charset=utf-8" },
+    body: JSON.stringify(payload)
+  }).then(function(){
+    finishSubmit();
+  }).catch(function(){
+    finishSubmit();
+  });
+}
+
+function finishSubmit(){
+  state.submitted = true;
+  state.submissionId = "SR-SSR-" + Date.now().toString(36).toUpperCase();
+  clearDraft();
+  state.step = SECTIONS.length - 1;
+  render();
+}
+
+render();
+})();
+</script>
+</body>
+</html>
