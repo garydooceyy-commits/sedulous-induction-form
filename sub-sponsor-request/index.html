@@ -245,7 +245,7 @@ var SECTIONS = [
 
 var state = {
   step: 0,
-  subSponsorCompany:"", requesterName:"", requesterPosition:"", date: todayISO(),
+  subSponsorCompany:"", requesterName:"", requesterPosition:"", requesterEmail:"", date: todayISO(),
   candidateName:"", sentinelNumber:"",
   siteName:"", sitePostcode:"", dutyType:"", dutyOther:"", natureOfWorks:"",
   shifts: [ { date:"", start:"", finish:"" } ],
@@ -341,6 +341,7 @@ function renderNav(section){
 /* ---------------- validation ---------------- */
 
 var UK_POSTCODE_RE = /^[A-Z]{1,2}\d[A-Z\d]?\s*\d[A-Z]{2}$/i;
+var EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 function validShifts(){
   return state.shifts.some(function(s){ return s.date && s.start && s.finish; });
@@ -349,7 +350,8 @@ function validShifts(){
 function validateSection(section){
   switch(section.type){
     case "start":
-      return state.subSponsorCompany.trim().length>1 && state.requesterName.trim().length>1 && state.requesterPosition.trim().length>1;
+      return state.subSponsorCompany.trim().length>1 && state.requesterName.trim().length>1 && state.requesterPosition.trim().length>1
+        && EMAIL_RE.test(state.requesterEmail.trim());
     case "candidate":
       return state.candidateName.trim().length>1 && state.sentinelNumber.trim().length>3;
     case "shift":
@@ -387,6 +389,12 @@ RENDERERS.start = function(card){
   card.appendChild(el("label",{class:"field-label", for:"f-reqpos"},["Your position"]));
   card.appendChild(el("input",{type:"text", id:"f-reqpos", value:state.requesterPosition, placeholder:"e.g. Business Support Administrator",
     oninput:function(e){ state.requesterPosition = e.target.value; renderNavOnly(); }}));
+
+  card.appendChild(el("label",{class:"field-label", for:"f-reqemail"},["Your email"]));
+  card.appendChild(el("input",{type:"email", id:"f-reqemail", value:state.requesterEmail, placeholder:"e.g. jamie.hayes@sunvillerail.co.uk",
+    autocomplete:"email", inputmode:"email",
+    oninput:function(e){ state.requesterEmail = e.target.value.trim(); renderNavOnly(); }}));
+  card.appendChild(el("div",{class:"field-hint"},["We'll email the approved copy of this request here."]));
 
   card.appendChild(el("label",{class:"field-label", for:"f-date"},["Today's date"]));
   card.appendChild(el("input",{type:"date", id:"f-date", value:state.date,
@@ -580,7 +588,7 @@ RENDERERS.done = function(card){
   card.appendChild(el("div",{class:"hero-mark", style:"background:var(--go)"},["✓"]));
   card.appendChild(el("h2",{class:"section-title"},["Request submitted"]));
   card.appendChild(el("p",{class:"section-intro"},[
-    "Thanks — your sub-sponsor request for " + (state.candidateName||"this worker") + " has been sent to Sedulous Rail. We'll confirm via Sentinel once it's been reviewed. You don't need to do anything else."
+    "Thanks — your sub-sponsor request for " + (state.candidateName||"this worker") + " has been sent to Sedulous Rail. You'll get an email to say it's been received, then the approved copy (PDF) as soon as it's approved. You don't need to do anything else."
   ]));
   card.appendChild(el("div",{class:"note"},["Keep this reference for your records:"]));
   card.appendChild(el("div",{class:"done-ref"},[state.submissionId || ""]));
@@ -596,9 +604,11 @@ function renderNavOnly(){
 
 function buildPayload(){
   return {
+    reference: state.submissionId,
     subSponsorCompany: state.subSponsorCompany,
     requesterName: state.requesterName,
     requesterPosition: state.requesterPosition,
+    requesterEmail: state.requesterEmail.trim(),
     requestDate: state.date,
     candidateName: state.candidateName,
     sentinelNumber: state.sentinelNumber,
@@ -625,6 +635,8 @@ function submit(){
   var nextBtn = navbar.querySelector(".btn.primary");
   if(nextBtn){ nextBtn.disabled = true; nextBtn.textContent = "Submitting…"; }
 
+  // made before sending so the reference on screen is the one in the emails and PDF
+  state.submissionId = "SR-SSR-" + Date.now().toString(36).toUpperCase();
   var payload = buildPayload();
   fetch(SCRIPT_URL, {
     method: "POST",
@@ -640,7 +652,6 @@ function submit(){
 
 function finishSubmit(){
   state.submitted = true;
-  state.submissionId = "SR-SSR-" + Date.now().toString(36).toUpperCase();
   clearDraft();
   state.step = SECTIONS.length - 1;
   render();
